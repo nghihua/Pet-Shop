@@ -5,15 +5,20 @@ import javax.swing.*;
 public class CheckPetFrame extends JFrame {
 
     private JPanel mainPanel;
-    private JList list1;
-    private JButton viewButton;
-    private JButton deleteButton;
+    private JList listPet;
     private JTextField searchTextField;
     private JLabel searchLabel;
+    private JButton viewButton;
+    private JButton deleteButton;
+
+    private DefaultListModel listPetModel;
+
+    //mock data
+    String pets[] = {"Toodle-Tuh", "Doggo", "Noob", "Tagalog"};
 
     CheckPetFrame(JFrame parentFrame) {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setSize(300,400);
+        this.setSize(600,400);
         this.setTitle("Check Current Pets");
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
@@ -29,7 +34,20 @@ public class CheckPetFrame extends JFrame {
             }
         });
 
+        //list
+        listPetModel = new DefaultListModel();
+        listPet.setModel(listPetModel);
+        refreshPetList();
+
         this.setVisible(true);
         //pack();
     }
+
+    public void refreshPetList() {
+        listPetModel.removeAllElements();
+        for (String p : pets) {
+            listPetModel.addElement(p);
+        }
+    }
+
 }
