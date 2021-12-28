@@ -1,6 +1,8 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CheckPetFrame extends JFrame {
 
@@ -40,7 +42,43 @@ public class CheckPetFrame extends JFrame {
         refreshPetList();
 
         this.setVisible(true);
-        //pack();
+
+
+        //action listeners
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                //retrieve data from database, replace current data
+                refreshPetList();
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int petIndex = listPet.getSelectedIndex();
+                if (petIndex == -1) {
+                    JOptionPane.showMessageDialog(new JFrame(), "You haven't selected a pet!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    int choice = JOptionPane.showOptionDialog(null,
+                            "Are you sure you want to delete?", //Object message,
+                            "Warning", //String title
+                            JOptionPane.YES_NO_OPTION, //int optionType
+                            JOptionPane.QUESTION_MESSAGE, //int messageType
+                            null, //Icon icon,
+                            new String[]{"Cancel", "OK"}, //Object[] options,
+                            "Cancel");//Object initialValue
+                    if (choice == 0 ){
+                        //do nothing
+                    } else{
+                        //delete it
+                        System.out.println("Delete " + petIndex);
+                    }
+                }
+            }
+        });
     }
 
     public void refreshPetList() {

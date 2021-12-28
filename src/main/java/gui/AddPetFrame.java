@@ -1,6 +1,10 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import static java.lang.Integer.parseInt;
 
 public class AddPetFrame extends JFrame {
     private JPanel mainPanel;
@@ -44,6 +48,18 @@ public class AddPetFrame extends JFrame {
 
         this.setVisible(true);
         //pack();
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String name = nameTextField.getText();
+                String breed = breedComboBox.getSelectedItem().toString();
+                int age = parseInt(ageTextField.getText());
+                int price = parseInt(priceTextField.getText());
+
+                //insert into database
+                System.out.println(name + breed + age + " " + price);
+            }
+        });
     }
 
     public void refreshBreedComboBox() {
