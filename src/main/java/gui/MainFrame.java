@@ -1,20 +1,10 @@
+package gui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.*;
 
-
-public class GUI {
-
-    public static void main(String[] args) {
-        new MainFrame();
-    }
-
-}
-
-class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame implements ActionListener {
 
     JMenuBar menuBar;
 
@@ -27,6 +17,10 @@ class MainFrame extends JFrame implements ActionListener {
     JMenuItem checkSupply;
 
     JMenu customerMenu;
+
+    public static void main(String[] args) {
+        new MainFrame();
+    }
 
     //constructor to set properties of frame
     MainFrame() {
@@ -85,6 +79,10 @@ class MainFrame extends JFrame implements ActionListener {
         if (e.getSource() == newPet) {
             JFrame addPetFrame = new AddPetFrame(this);
             addPetFrame.setAlwaysOnTop(true);
+        }
+        if (e.getSource() == checkPet) {
+            JFrame checkPetFrame = new CheckPetFrame(this);
+            checkPetFrame.setAlwaysOnTop(true);
         }
     }
 
@@ -151,9 +149,6 @@ class AddPetFrame extends JFrame {
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-
-//        gbc.weightx = 2;
-//        gbc.weighty = 0;
 
         gbc.fill = GridBagConstraints.BOTH;
 
