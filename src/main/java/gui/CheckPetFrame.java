@@ -7,9 +7,9 @@ public class CheckPetFrame extends JFrame {
     private JPanel mainPanel;
     private JList listPet;
     private JTextField searchTextField;
-    private JLabel searchLabel;
     private JButton viewButton;
     private JButton deleteButton;
+    private JButton searchButton;
 
     private DefaultListModel listPetModel;
 

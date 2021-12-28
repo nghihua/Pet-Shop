@@ -25,7 +25,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     //constructor to set properties of frame
     MainFrame() {
-        setUIFont(new javax.swing.plaf.FontUIResource("Serif",Font.PLAIN,20));
+        setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,24));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,500);
@@ -34,7 +34,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
         initMenu();
         this.setJMenuBar(menuBar);
-        menuBar.setPreferredSize(new Dimension(100,40));
+        menuBar.setPreferredSize(new Dimension(100,60));
+
+        JLabel label = new JLabel();
+        ImageIcon image = new ImageIcon();
 
         this.setLocationRelativeTo(null);
         this.setVisible(true);
