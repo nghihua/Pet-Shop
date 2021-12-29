@@ -57,15 +57,17 @@ public class CheckPetFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int petIndex = listPet.getSelectedIndex();
+                //if no pet is selected
                 if (petIndex == -1) {
-                    JOptionPane.showMessageDialog(new JFrame(), "You haven't selected a pet!", "Error",
+                    JOptionPane.showMessageDialog(null, "You haven't selected a pet!", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
                 else {
+                    //warning before delete
                     int choice = JOptionPane.showOptionDialog(null,
                             "Are you sure you want to delete?", //Object message,
                             "Warning", //String title
-                            JOptionPane.YES_NO_OPTION, //int optionType
+                            JOptionPane.OK_CANCEL_OPTION, //int optionType
                             JOptionPane.QUESTION_MESSAGE, //int messageType
                             null, //Icon icon,
                             new String[]{"Cancel", "OK"}, //Object[] options,
