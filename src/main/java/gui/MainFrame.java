@@ -91,6 +91,12 @@ public class MainFrame extends JFrame implements ActionListener {
         if (e.getSource() == checkPet) {
             JDialog checkPetDialog = new CheckPetDialog(this);
         }
+        if (e.getSource() == newSupply) {
+            JDialog addSupplyDialog = new AddSupplyDialog(this);
+        }
+        if (e.getSource() == checkSupply) {
+            JDialog checkSupplyDialog = new CheckSupplyDialog(this);
+        }
     }
 
 }
