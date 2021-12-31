@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import static java.lang.Integer.parseInt;
 
-public class AddPetFrame extends JFrame {
+public class AddPetDialog extends JDialog {
     private JPanel mainPanel;
     private JTextField nameTextField;
     private JComboBox breedComboBox;
@@ -17,30 +17,17 @@ public class AddPetFrame extends JFrame {
     private JLabel ageLabel;
     private JLabel priceLabel;
     private JButton submitButton;
-    private JLabel resultLabel;
 
     private DefaultComboBoxModel breedComboBoxModel;
 
     //either "dog" or "cat"
     private String mode;
 
-    AddPetFrame(JFrame parentFrame) {
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    AddPetDialog(JFrame parent) {
+        super(parent, "Add New Pet", true);
         this.setSize(300,400);
-        this.setTitle("Add New Pet");
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
-
-        //make user cannot interact with the parent frame until closing this frame
-        parentFrame.setFocusableWindowState(false);
-        parentFrame.setEnabled(false);
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                parentFrame.setFocusableWindowState(true);
-                parentFrame.setEnabled(true);
-            }
-        });
 
         //combo box
         breedComboBoxModel = new DefaultComboBoxModel();
@@ -89,13 +76,18 @@ public class AddPetFrame extends JFrame {
                 null, //Icon icon,
                 new String[]{"Dog", "Cat"}, //Object[] options,
                 "Dog");//Object initialValue
-        if (choice == 0 ){
+        if (choice == -1) {
+            //if user clicked "x", then dispose the frame entirely
+            this.dispose();
+        }
+        else if (choice == 0 ) {
             //load Dog's breeds into combo box
             String breeds[] = {"Golden Retriever", "Poodles", "Pitbull"};
             refreshBreedComboBox(breeds);
             //set mode to "dog"
             mode = "dog";
-        } else{
+        }
+        else{
             //load Cat's breeds into combo box
             String breeds[] = {"Main Coon", "British Short Hair", "Siamese"};
             refreshBreedComboBox(breeds);

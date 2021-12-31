@@ -1,7 +1,6 @@
 package gui;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -87,12 +86,10 @@ public class MainFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == newPet) {
-            JFrame addPetFrame = new AddPetFrame(this);
-            addPetFrame.setAlwaysOnTop(true);
+            JDialog addPetDialog = new AddPetDialog(this);
         }
         if (e.getSource() == checkPet) {
-            JFrame checkPetFrame = new CheckPetFrame(this);
-            checkPetFrame.setAlwaysOnTop(true);
+            JDialog checkPetDialog = new CheckPetDialog(this);
         }
     }
 
