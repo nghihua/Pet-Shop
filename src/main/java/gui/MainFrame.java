@@ -1,5 +1,7 @@
 package gui;
 
+import database.PostgreSQLJDBC;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -32,6 +34,20 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setSize(800,500);
         this.setTitle("Pet Shop");
         this.setLayout(new FlowLayout());
+
+        //Connect to database
+        PostgreSQLJDBC.ConnectDatabase();
+
+        //Disconnect database when the main frame is closed
+        WindowAdapter exit_on_close = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                PostgreSQLJDBC.DisconnectDatabase();
+                System.exit(0);
+            }
+        };
+        this.addWindowListener(exit_on_close);
 
         initMenu();
         this.setJMenuBar(menuBar);
