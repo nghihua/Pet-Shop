@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 public class CheckCustomerDialog extends JDialog {
 
     private JButton viewButton;
-    private JList listPet;
+    private JList listCustomer;
     private JLabel phoneLabel;
     private JLabel nameLabel;
     private JButton searchButton;
@@ -15,25 +15,34 @@ public class CheckCustomerDialog extends JDialog {
     private JTextField nameTextField;
     private JPanel mainPanel;
 
+    private DefaultListModel listCustomerModel;
+
+
     CheckCustomerDialog(JFrame parent) {
         super(parent, "Check Current Customers", true);
         this.setSize(600,400);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
+        //list
+        listCustomerModel = new DefaultListModel();
+        listCustomer.setModel(listCustomerModel);
+        //load initial data
+        refreshCustomerList(new String[]{"Toodle-Tuh", "Doggo", "Noob", "Tagalog"});
+
         //action listeners
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-//                int petIndex = listSupply.getSelectedIndex();
-//                //if no pet is selected
-//                if (petIndex == -1) {
-//                    JOptionPane.showMessageDialog(null, "You haven't selected a pet!", "Error",
-//                            JOptionPane.ERROR_MESSAGE);
-//                }
-//                else {
-//                    new ViewPetDialog(CheckSupplyDialog.this);
-//                }
+                int customerIndex = listCustomer.getSelectedIndex();
+                //if no pet is selected
+                if (customerIndex == -1) {
+                    JOptionPane.showMessageDialog(null, "You haven't selected a customer!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    new ViewCustomerDialog(CheckCustomerDialog.this);
+                }
             }
         });
 
@@ -47,6 +56,13 @@ public class CheckCustomerDialog extends JDialog {
         });
 
         this.setVisible(true);
+    }
+
+    public void refreshCustomerList(String [] customers) {
+        listCustomerModel.removeAllElements();
+        for (String c : customers) {
+            listCustomerModel.addElement(c);
+        }
     }
 
 }

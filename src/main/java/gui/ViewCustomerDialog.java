@@ -6,59 +6,40 @@ import java.awt.event.ActionListener;
 
 import static java.lang.Integer.parseInt;
 
-public class ViewPetDialog extends JDialog {
+public class ViewCustomerDialog extends JDialog {
 
     private JPanel mainPanel;
     private JLabel nameLabel;
     private JTextField nameTextField;
-    private JLabel breedLabel;
-    private JComboBox breedComboBox;
-    private JLabel ageLabel;
-    private JTextField ageTextField;
-    private JLabel priceLabel;
-    private JTextField priceTextField;
+    private JLabel phoneLabel;
+    private JTextField phoneTextField;
+    private JLabel discountLabel;
+    private JTextField discountTextField;
     private JButton submitButton;
     private JButton deleteButton;
-    private JButton sellButton;
 
-    private DefaultComboBoxModel breedComboBoxModel;
-
-    //mock data
-    String breeds[] = {"Main Coon", "Jinx"};
-
-    ViewPetDialog(JDialog parent) {
-        super(parent, "View Pet Information", true);
-        this.setSize(300,500);
+    ViewCustomerDialog(JDialog parent) {
+        super(parent, "View Customer Information", true);
+        this.setSize(300,400);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
-        //combo box
-        breedComboBoxModel = new DefaultComboBoxModel();
-        breedComboBox.setModel(breedComboBoxModel);
-        refreshBreedComboBox(breeds);
-
-        //action listeners
+        //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-                String breed = breedComboBox.getSelectedItem().toString();
-                int age = parseInt(ageTextField.getText());
-                int price = parseInt(priceTextField.getText());
+                String phone = phoneTextField.getText();
+                float discount = Float.parseFloat(discountTextField.getText());
 
-                System.out.println("Update: " + name + breed + age + " " + price);
+                System.out.println("Update: " + name + " " + phone + " " + discount);
 
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",
                         JOptionPane.PLAIN_MESSAGE);
             }
         });
-        sellButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //open sell pet window
-            }
-        });
+
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -83,10 +64,4 @@ public class ViewPetDialog extends JDialog {
         this.setVisible(true);
     }
 
-    public void refreshBreedComboBox(String [] breeds) {
-        breedComboBoxModel.removeAllElements();
-        for (String p : breeds) {
-            breedComboBoxModel.addElement(p);
-        }
-    }
 }
