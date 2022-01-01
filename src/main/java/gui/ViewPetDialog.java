@@ -37,8 +37,6 @@ public class ViewPetDialog extends JDialog {
         breedComboBox.setModel(breedComboBoxModel);
         refreshBreedComboBox(breeds);
 
-        this.setVisible(true);
-
         //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -81,6 +79,8 @@ public class ViewPetDialog extends JDialog {
                 }
             }
         });
+
+        this.setVisible(true);
     }
 
     public void refreshBreedComboBox(String [] breeds) {

@@ -21,8 +21,6 @@ public class AddSupplyDialog extends JDialog {
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
-        this.setVisible(true);
-
         //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -37,5 +35,7 @@ public class AddSupplyDialog extends JDialog {
                         JOptionPane.PLAIN_MESSAGE);
             }
         });
+
+        this.setVisible(true);
     }
 }

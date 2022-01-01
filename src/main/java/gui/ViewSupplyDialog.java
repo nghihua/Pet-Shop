@@ -23,8 +23,6 @@ public class ViewSupplyDialog extends JDialog {
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
-        setVisible(true);
-
         //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -65,6 +63,8 @@ public class ViewSupplyDialog extends JDialog {
                 }
             }
         });
+
+        this.setVisible(true);
     }
 
 }

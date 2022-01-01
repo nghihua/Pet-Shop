@@ -34,7 +34,6 @@ public class AddPetDialog extends JDialog {
         breedComboBox.setModel(breedComboBoxModel);
 
         selectPetSpecies();
-        this.setVisible(true);
 
         //handle submit
         submitButton.addActionListener(new ActionListener() {
@@ -58,6 +57,8 @@ public class AddPetDialog extends JDialog {
                         JOptionPane.PLAIN_MESSAGE);
             }
         });
+
+        this.setVisible(true);
     }
 
     public void refreshBreedComboBox(String [] breeds) {
