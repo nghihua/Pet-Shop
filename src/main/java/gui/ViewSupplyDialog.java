@@ -19,7 +19,7 @@ public class ViewSupplyDialog extends JDialog {
 
     ViewSupplyDialog(JDialog parent) {
         super(parent, "View Supply Information", true);
-        this.setSize(300,500);
+        this.setSize(300,300);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
@@ -40,7 +40,8 @@ public class ViewSupplyDialog extends JDialog {
         sellButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //open sell pet window
+                //open sell supply window
+                new SellSupplyDialog(ViewSupplyDialog.this);
             }
         });
         deleteButton.addActionListener(new ActionListener() {

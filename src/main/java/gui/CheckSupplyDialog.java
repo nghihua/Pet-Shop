@@ -35,14 +35,14 @@ public class CheckSupplyDialog extends JDialog {
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                int petIndex = listSupply.getSelectedIndex();
+                int supplyIndex = listSupply.getSelectedIndex();
                 //if no pet is selected
-                if (petIndex == -1) {
-                    JOptionPane.showMessageDialog(null, "You haven't selected a pet!", "Error",
+                if (supplyIndex == -1) {
+                    JOptionPane.showMessageDialog(null, "You haven't selected a supply!", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-                    new ViewPetDialog(CheckSupplyDialog.this);
+                    new ViewSupplyDialog(CheckSupplyDialog.this);
                 }
             }
         });

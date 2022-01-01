@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import static java.lang.Integer.parseInt;
 
-public class SellPetDialog extends JDialog {
+public class SellSupplyDialog extends JDialog {
 
     private JPanel mainPanel;
     private JLabel customerLabel;
@@ -19,8 +19,8 @@ public class SellPetDialog extends JDialog {
 
     private DefaultComboBoxModel customerComboBoxModel;
 
-    SellPetDialog(JDialog parent) {
-        super(parent, "Sell Pet", true);
+    SellSupplyDialog(JDialog parent) {
+        super(parent, "Sell Supply", true);
         this.setSize(600,300);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
@@ -41,7 +41,7 @@ public class SellPetDialog extends JDialog {
                 JOptionPane.showMessageDialog(null, "Sell successfully!", "Congrats",
                         JOptionPane.PLAIN_MESSAGE);
                 //close sell pet and view pet dialogs after sold
-                SellPetDialog.this.dispose();
+                SellSupplyDialog.this.dispose();
                 parent.dispose();
             }
         });
