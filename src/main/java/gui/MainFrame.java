@@ -6,17 +6,19 @@ import java.awt.event.*;
 
 public class MainFrame extends JFrame implements ActionListener {
 
-    JMenuBar menuBar;
+    private JMenuBar menuBar;
 
-    JMenu petMenu;
-    JMenuItem newPet;
-    JMenuItem checkPet;
+    private JMenu petMenu;
+    private JMenuItem newPet;
+    private JMenuItem checkPet;
 
-    JMenu supplyMenu;
-    JMenuItem newSupply;
-    JMenuItem checkSupply;
+    private JMenu supplyMenu;
+    private JMenuItem newSupply;
+    private JMenuItem checkSupply;
 
-    JMenu customerMenu;
+    private JMenu customerMenu;
+    private JMenuItem newCustomer;
+    private JMenuItem checkCustomer;
 
     public static void main(String[] args) {
         new MainFrame();
@@ -65,6 +67,12 @@ public class MainFrame extends JFrame implements ActionListener {
         supplyMenu.add(checkSupply);
 
         customerMenu = new JMenu("Customer");
+        newCustomer = new JMenuItem("New Customer");
+        newCustomer.addActionListener(this);
+        checkCustomer = new JMenuItem("Check Current Customers");
+        checkCustomer.addActionListener(this);
+        customerMenu.add(newCustomer);
+        customerMenu.add(checkCustomer);
 
         menuBar.add(petMenu);
         menuBar.add(supplyMenu);
@@ -96,6 +104,12 @@ public class MainFrame extends JFrame implements ActionListener {
         }
         if (e.getSource() == checkSupply) {
             JDialog checkSupplyDialog = new CheckSupplyDialog(this);
+        }
+        if (e.getSource() == newCustomer) {
+            JDialog addCustomerDialog = new AddCustomerDialog(this);
+        }
+        if (e.getSource() == checkCustomer) {
+            JDialog checkCustomerDialog = new CheckCustomerDialog(this);
         }
     }
 
