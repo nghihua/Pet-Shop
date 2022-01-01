@@ -52,6 +52,9 @@ public class CheckCustomerDialog extends JDialog {
                 //retrieve data from database, replace current data
                 String phone = phoneTextField.getText();
                 String name = nameTextField.getText();
+
+                //fetch data from database and call refreshCustomerList here
+                //refreshCustomerList(fetchDataBasedOnConditions(phone, name));
             }
         });
 

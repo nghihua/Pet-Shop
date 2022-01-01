@@ -23,8 +23,6 @@ public class ViewPetDialog extends JDialog {
 
     private DefaultComboBoxModel breedComboBoxModel;
 
-    //mock data
-    String breeds[] = {"Main Coon", "Jinx"};
 
     ViewPetDialog(JDialog parent) {
         super(parent, "View Pet Information", true);
@@ -35,7 +33,8 @@ public class ViewPetDialog extends JDialog {
         //combo box
         breedComboBoxModel = new DefaultComboBoxModel();
         breedComboBox.setModel(breedComboBoxModel);
-        refreshBreedComboBox(breeds);
+        //load initial data
+        refreshBreedComboBox(new String[]{"Main Coon", "Jinx"});
 
         //action listeners
         submitButton.addActionListener(new ActionListener() {
@@ -56,7 +55,8 @@ public class ViewPetDialog extends JDialog {
         sellButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //open sell pet window
+                //open sell pet dialog
+                new SellPetDialog(ViewPetDialog.this);
             }
         });
         deleteButton.addActionListener(new ActionListener() {
