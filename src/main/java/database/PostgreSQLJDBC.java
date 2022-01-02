@@ -1,11 +1,12 @@
 package database;
+
 import java.sql.*;
 
 public class PostgreSQLJDBC {
     static Connection c = null;
     static Statement stmt = null;
 
-    public static void ConnectDatabase()
+    public static void connectDatabase()
     {
         // Try to get connection to database
         try {
@@ -24,7 +25,7 @@ public class PostgreSQLJDBC {
         }
     }
 
-    public static void DisconnectDatabase()
+    public static void disconnectDatabase()
     {
         try{
             c.close();
@@ -35,5 +36,64 @@ public class PostgreSQLJDBC {
             e.printStackTrace();
             System.exit(0);
         }
+    }
+
+    public static void insertToDatabase(String sql)
+    {
+        try
+        {
+            stmt = c.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static ResultSet readFromDatabase(String sql)
+    {
+        ResultSet rs = null;
+        try
+        {
+            stmt = c.createStatement();
+            rs = stmt.executeQuery(sql);
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    public static void closeStatement()
+    {
+        try {
+            stmt.close();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static int countResult(String sql)
+    {
+        int count = 0;
+        try {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next())
+            {
+                count ++;
+            }
+            stmt.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return count;
     }
 }

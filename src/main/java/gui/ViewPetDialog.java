@@ -24,7 +24,7 @@ public class ViewPetDialog extends JDialog {
     private DefaultComboBoxModel breedComboBoxModel;
 
 
-    ViewPetDialog(JDialog parent) {
+    ViewPetDialog(JDialog parent, String id) {
         super(parent, "View Pet Information", true);
         this.setSize(300,500);
         this.setContentPane(mainPanel);

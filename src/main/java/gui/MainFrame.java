@@ -36,14 +36,14 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setLayout(new FlowLayout());
 
         //Connect to database
-        PostgreSQLJDBC.ConnectDatabase();
+        PostgreSQLJDBC.connectDatabase();
 
         //Disconnect database when the main frame is closed
         WindowAdapter exit_on_close = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                PostgreSQLJDBC.DisconnectDatabase();
+                PostgreSQLJDBC.disconnectDatabase();
                 System.exit(0);
             }
         };

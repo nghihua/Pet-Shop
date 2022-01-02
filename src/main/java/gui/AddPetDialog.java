@@ -1,8 +1,13 @@
 package gui;
 
+import database.PostgreSQLJDBC;
+import objects.pets.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 
@@ -40,16 +45,22 @@ public class AddPetDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-                String breed = breedComboBox.getSelectedItem().toString();
-                int age = parseInt(ageTextField.getText());
-                int price = parseInt(priceTextField.getText());
+//                String breed = breedComboBox.getSelectedItem().toString();
+                String breed = Objects.requireNonNull(breedComboBox.getSelectedItem()).toString();
+                int age = Integer.parseInt(ageTextField.getText());
+                double price = Double.parseDouble(priceTextField.getText());
 
                 if (mode.equals("dog")) {
                     //insert dog here
+                    // create dog object with parameters and save to database
+                    Dog d = new Dog(name, age, price, breed);
+                    d.setInfo();
                     System.out.println("Insert dog: " + name + breed + age + " " + price);
                 }
                 else if (mode.equals("cat")) {
                     //insert cat here
+                    Cat c = new Cat(name, age, price, breed);
+                    c.setInfo();
                     System.out.println("Insert cat: " + name + breed + age + " " + price);
                 }
                 //catch error and if no error, please do this
@@ -68,6 +79,28 @@ public class AddPetDialog extends JDialog {
         }
     }
 
+
+    String[] getBreed(String species)
+    {
+        String sql = String.format("SELECT breed FROM species WHERE species = '%s'", species);
+        int no_of_species = PostgreSQLJDBC.countResult(sql);
+        String[] breed = new String[no_of_species];
+        try{
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            int idx = 0;
+            while(rs.next())
+            {
+                breed[idx] = rs.getString("breed");
+                idx++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return breed;
+    }
     public void selectPetSpecies() {
         int choice = JOptionPane.showOptionDialog(null,
                 "Which type of pet do you want to add?", //Object message,
@@ -83,14 +116,17 @@ public class AddPetDialog extends JDialog {
         }
         else if (choice == 0 ) {
             //load Dog's breeds into combo box
-            String breeds[] = {"Golden Retriever", "Poodles", "Pitbull"};
+            // Select breed where species = dog
+            //String breeds[] = {"Golden Retriever", "Poodles", "Pitbull"};
+            String[] breeds = getBreed("Dog");
             refreshBreedComboBox(breeds);
             //set mode to "dog"
             mode = "dog";
         }
         else{
             //load Cat's breeds into combo box
-            String breeds[] = {"Main Coon", "British Short Hair", "Siamese"};
+            //String breeds[] = {"Main Coon", "British Short Hair", "Siamese"};
+            String[] breeds = getBreed("Cat");
             refreshBreedComboBox(breeds);
             //set mode to "cat"
             mode = "cat";
