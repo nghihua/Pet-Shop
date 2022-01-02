@@ -1,8 +1,13 @@
 package gui;
 
+import database.PostgreSQLJDBC;
+import objects.pets.Pets;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static java.lang.Integer.parseInt;
 
@@ -23,6 +28,61 @@ public class ViewPetDialog extends JDialog {
 
     private DefaultComboBoxModel breedComboBoxModel;
 
+    String[] loadAllSpecies()
+    {
+        String sql = "SELECT DISTINCT species FROM species;";
+        int no_of_spec = PostgreSQLJDBC.countResult(sql);
+        String[] specs = new String[no_of_spec];
+        try{
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            int idx = 0;
+            while(rs.next())
+            {
+                specs[idx] = rs.getString("species");
+                idx++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return specs;
+    }
+    String[] loadAllBreeds(String species)
+    {
+        String sql = String.format("SELECT breed FROM species WHERE species = '%s';",species );
+        int no_of_breed = PostgreSQLJDBC.countResult(sql);
+        String[] breeds = new String[no_of_breed];
+        try{
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            int idx = 0;
+            while(rs.next())
+            {
+                breeds[idx] = rs.getString("breed");
+                idx ++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return breeds;
+    }
+    int getBreedIndex(String breed, String[] breeds)
+    {
+        int idx = 0;
+        for (int i=0; i< breeds.length; i++)
+        {
+            if(breeds[i] == breed)
+            {
+                idx = i;
+                break;
+            }
+        }
+        return idx;
+    }
 
     ViewPetDialog(JDialog parent, String id) {
         super(parent, "View Pet Information", true);
@@ -30,11 +90,18 @@ public class ViewPetDialog extends JDialog {
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
+        //load initial data
+        Pets p = new Pets(id);
+        this.nameTextField.setText(p.getName());
+        this.ageTextField.setText(Integer.toString(p.getAge()));
+        this.priceTextField.setText(Double.toString(p.getPrice_in()*1.1));
         //combo box
         breedComboBoxModel = new DefaultComboBoxModel();
         breedComboBox.setModel(breedComboBoxModel);
         //load initial data
-        refreshBreedComboBox(new String[]{"Main Coon", "Jinx"});
+        String[] breeds = loadAllBreeds(p.getSpecies());
+        refreshBreedComboBox(breeds);
+        breedComboBox.setSelectedIndex(getBreedIndex(p.getBreed(), breeds));
 
         //action listeners
         submitButton.addActionListener(new ActionListener() {

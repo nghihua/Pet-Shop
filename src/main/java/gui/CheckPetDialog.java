@@ -96,9 +96,32 @@ public class CheckPetDialog extends JDialog {
         }
         return breeds;
     }
+    String[] loadSearchedPets(String breed, int min_age, int max_age, int min_price, int max_price)
+    {
+        String sql = String.format("SELECT pet_id FROM pet WHERE breed = '%s' AND '%d' < age AND age < '%d' AND " +
+                "'%d' < price_in * 1.1 AND price_in * 1.1 < '%d';", breed, min_age, max_age, min_price, max_price);
+        int no_of_pets = PostgreSQLJDBC.countResult(sql);
+        String[] pet_ids = new String[no_of_pets];
+        try{
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            int idx = 0;
+            while(rs.next())
+            {
+                pet_ids[idx] = rs.getString("pet_id");
+                idx++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return pet_ids;
+    }
+
     CheckPetDialog(JFrame parent) {
         super(parent, "Check Current Pets", true);
-        this.setSize(600,400);
+        this.setSize(800,400);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
@@ -152,11 +175,20 @@ public class CheckPetDialog extends JDialog {
                 int maxAge = (int) maxAgeSpinner.getValue();
                 int minPrice = (int) minPriceSpinner.getValue();
                 int maxPrice = (int) maxPriceSpinner.getValue();
+                refreshPetList(loadSearchedPets(selectedBreed, minAge, maxAge,minPrice, maxPrice));
             }
         });
 
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshPetList(loadAllPetId());
+            }
+        });
         this.setVisible(true);
     }
+
+
 
     public void refreshPetList(String [] pets) {
         listPetModel.removeAllElements();
@@ -178,5 +210,6 @@ public class CheckPetDialog extends JDialog {
             speciesComboBoxModel.addElement(p);
         }
     }
+
 
 }

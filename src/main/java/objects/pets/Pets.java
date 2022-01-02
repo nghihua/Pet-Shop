@@ -18,9 +18,10 @@ public class Pets {
         this.age = age;
         this.price_in = price_in;
     }
-    Pets(String id)
+    public Pets(String id)
     {
-        String sql = String.format("SELECT * FROM pet WHERE pet_id = '%s';", id);
+        String sql = String.format("SELECT * FROM pet p JOIN species s on (p.breed = s.breed) " +
+                "WHERE p.pet_id = '%s';", id);
         try{
         ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
         while(rs.next())
@@ -28,8 +29,9 @@ public class Pets {
             this.id = id;
             this.name = rs.getString("pet_name");
             this.age = rs.getInt("age");
-            this.species = rs.getString("breed");
+            this.breed = rs.getString("breed");
             this.price_in = rs.getDouble("price_in");
+            this.species = rs.getString("species");
         }}
         catch(SQLException e)
         {
@@ -42,4 +44,25 @@ public class Pets {
                 "VALUES('%s', %d, '%s', %f);", this.name, this.age, this.breed, this.price_in);
         PostgreSQLJDBC.insertToDatabase(sql);
     }
+    public String getName()
+    {
+        return this.name;
+    }
+    public int getAge()
+    {
+        return this.age;
+    }
+    public String getSpecies()
+    {
+        return this.species;
+    }
+    public String getBreed()
+    {
+        return this.breed;
+    }
+    public double getPrice_in()
+    {
+        return this.price_in;
+    }
+
 }
