@@ -38,7 +38,7 @@ public class PostgreSQLJDBC {
         }
     }
 
-    public static void insertToDatabase(String sql)
+    public static void updateToDatabase(String sql)
     {
         try
         {

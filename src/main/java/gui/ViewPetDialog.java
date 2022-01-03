@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 
@@ -75,7 +76,7 @@ public class ViewPetDialog extends JDialog {
         int idx = 0;
         for (int i=0; i< breeds.length; i++)
         {
-            if(breeds[i] == breed)
+            if(Objects.equals(breeds[i], breed))
             {
                 idx = i;
                 break;
@@ -110,10 +111,11 @@ public class ViewPetDialog extends JDialog {
                 String name = nameTextField.getText();
                 String breed = breedComboBox.getSelectedItem().toString();
                 int age = parseInt(ageTextField.getText());
-                int price = parseInt(priceTextField.getText());
+                double price = Double.parseDouble(priceTextField.getText());
 
                 System.out.println("Update: " + name + breed + age + " " + price);
-
+                Pets p = new Pets(id);
+                p.updateInfo(name, age, breed, price);//notification in class Pets
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",
                         JOptionPane.PLAIN_MESSAGE);
@@ -123,7 +125,7 @@ public class ViewPetDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //open sell pet dialog
-                new SellPetDialog(ViewPetDialog.this);
+                new SellPetDialog(ViewPetDialog.this, id);
             }
         });
         deleteButton.addActionListener(new ActionListener() {

@@ -1,8 +1,12 @@
 package gui;
 
+import database.PostgreSQLJDBC;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static java.lang.Integer.parseInt;
 
@@ -19,7 +23,28 @@ public class SellPetDialog extends JDialog {
 
     private DefaultComboBoxModel customerComboBoxModel;
 
-    SellPetDialog(JDialog parent) {
+    String[] loadCustomerPhone()
+    {
+        String sql = "SELECT phone FROM customer;";
+        int no_of_customer = PostgreSQLJDBC.countResult(sql);
+        String[] phones = new String[no_of_customer];
+        try{
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            int idx = 0;
+            while(rs.next())
+            {
+                phones[idx] = Integer.toString(rs.getInt("phone"));
+                idx ++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return phones;
+    }
+    SellPetDialog(JDialog parent, String id) {
         super(parent, "Sell Pet", true);
         this.setSize(600,300);
         this.setContentPane(mainPanel);
@@ -30,7 +55,9 @@ public class SellPetDialog extends JDialog {
         customerComboBox.setModel(customerComboBoxModel);
 
         //load initial data
-        refreshCustomerComboBox(new String[]{"091738174", "09213810"});
+        //refreshCustomerComboBox(new String[]{"091738174", "09213810"});
+        refreshCustomerComboBox(loadCustomerPhone());
+        //load customer info to an object and bla bla
         //by default, the first customer in the list is selected
         //load that customer's discount value and calculate the price here
         String customer = customerComboBox.getSelectedItem().toString();

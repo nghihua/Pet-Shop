@@ -1,8 +1,11 @@
 package gui;
 
+import objects.customers.Customer;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class AddCustomerDialog extends JDialog {
 
@@ -26,14 +29,21 @@ public class AddCustomerDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-                String phone = phoneTextField.getText();
-                float discount = Float.parseFloat(discountTextField.getText());
+                int phone = Integer.parseInt(phoneTextField.getText());
+                float discount = (Objects.equals(discountTextField.getText(), "")) ? -1 : Float.parseFloat(discountTextField.getText());
 
-                System.out.println("Insert supply: " + name + " " + phone + " " + discount);
-
-                //catch error and if no error, please do this
-                JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
-                        JOptionPane.PLAIN_MESSAGE);
+                try {
+                    Customer c = new Customer(name, phone, discount);
+                    c.setInfo();
+                    System.out.println("Insert supply: " + name + " " + phone + " " + discount);
+                    JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
+                            JOptionPane.PLAIN_MESSAGE);
+                    //catch error and if no error, please do this
+                }
+                catch(Exception e) {
+                    JOptionPane.showMessageDialog(null, "Insert failed!", "Request failed",
+                            JOptionPane.PLAIN_MESSAGE);
+                }
             }
         });
 

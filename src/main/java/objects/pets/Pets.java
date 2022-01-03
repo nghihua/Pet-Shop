@@ -32,7 +32,9 @@ public class Pets {
             this.breed = rs.getString("breed");
             this.price_in = rs.getDouble("price_in");
             this.species = rs.getString("species");
-        }}
+        }
+        PostgreSQLJDBC.closeStatement();
+        }
         catch(SQLException e)
         {
             e.printStackTrace();
@@ -42,7 +44,13 @@ public class Pets {
     public void setInfo() {
         String sql = String.format("INSERT INTO pet(pet_name, age, breed, price_in) " +
                 "VALUES('%s', %d, '%s', %f);", this.name, this.age, this.breed, this.price_in);
-        PostgreSQLJDBC.insertToDatabase(sql);
+        PostgreSQLJDBC.updateToDatabase(sql);
+    }
+    public void updateInfo(String name, int age, String breed, double price)
+    {
+        String sql = String.format("UPDATE pet SET pet_name = '%s', age = '%d', breed = '%s', price_in = '%f' " +
+                "WHERE pet_id = '%s';", name, age, breed, price / 1.1, this.id);
+        PostgreSQLJDBC.updateToDatabase(sql);
     }
     public String getName()
     {
