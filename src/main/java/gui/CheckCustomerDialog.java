@@ -1,8 +1,13 @@
 package gui;
 
+import database.PostgreSQLJDBC;
+import objects.customers.Customer;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CheckCustomerDialog extends JDialog {
 
@@ -18,6 +23,27 @@ public class CheckCustomerDialog extends JDialog {
     private DefaultListModel listCustomerModel;
 
 
+    String[] loadAllCustomer()
+    {
+        String sql = "SELECT cust_id FROM customer;";
+        int no_of_cust = PostgreSQLJDBC.countResult(sql);
+        String[] cid = new String[no_of_cust];
+        try{
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            int idx = 0;
+            while(rs.next())
+            {
+                cid[idx] = Integer.toString(rs.getInt("cust_id"));
+                idx++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return cid;
+    }
     CheckCustomerDialog(JFrame parent) {
         super(parent, "Check Current Customers", true);
         this.setSize(600,400);
@@ -28,20 +54,23 @@ public class CheckCustomerDialog extends JDialog {
         listCustomerModel = new DefaultListModel();
         listCustomer.setModel(listCustomerModel);
         //load initial data
-        refreshCustomerList(new String[]{"Toodle-Tuh", "Doggo", "Noob", "Tagalog"});
+        //load customer id
+        //refreshCustomerList(new String[]{"Toodle-Tuh", "Doggo", "Noob", "Tagalog"});
+        refreshCustomerList(loadAllCustomer());
 
         //action listeners
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int customerIndex = listCustomer.getSelectedIndex();
-                //if no pet is selected
+                //if no customer is selected
                 if (customerIndex == -1) {
                     JOptionPane.showMessageDialog(null, "You haven't selected a customer!", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-                    new ViewCustomerDialog(CheckCustomerDialog.this);
+                    String val = listCustomer.getSelectedValue().toString();
+                    new ViewCustomerDialog(CheckCustomerDialog.this, Integer.parseInt(val));
                 }
             }
         });

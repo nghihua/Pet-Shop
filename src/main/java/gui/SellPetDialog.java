@@ -1,6 +1,8 @@
 package gui;
 
 import database.PostgreSQLJDBC;
+import objects.customers.Customer;
+import objects.pets.Pets;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -50,6 +52,10 @@ public class SellPetDialog extends JDialog {
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
+        //load pet
+        Pets p = new Pets(id);
+        //Store customer's id
+        final int[] cust_id = new int[1];
         //combo box
         customerComboBoxModel = new DefaultComboBoxModel();
         customerComboBox.setModel(customerComboBoxModel);
@@ -60,9 +66,9 @@ public class SellPetDialog extends JDialog {
         //load customer info to an object and bla bla
         //by default, the first customer in the list is selected
         //load that customer's discount value and calculate the price here
-        String customer = customerComboBox.getSelectedItem().toString();
-        discountValueLabel.setText("0.2");
-        priceValueLabel.setText("100");
+        //String customer = customerComboBox.getSelectedItem().toString();
+        //discountValueLabel.setText("0.2");
+        //priceValueLabel.setText("100");
 
         //action listeners
 
@@ -71,9 +77,11 @@ public class SellPetDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //get currently selected customer, load the discount value and calculate the price
-                String customer = customerComboBox.getSelectedItem().toString();
-                discountValueLabel.setText("0.2");
-                priceValueLabel.setText("100");
+                Customer c = new Customer(Integer.parseInt(customerComboBox.getSelectedItem().toString()), false);
+                discountValueLabel.setText(Double.toString(c.getDiscount()));
+                double cost = p.getPrice_in() * 1.1 * (1 - c.getDiscount());
+                priceValueLabel.setText(Double.toString(cost));
+                cust_id[0] = c.getId();
             }
         });
 
@@ -83,7 +91,8 @@ public class SellPetDialog extends JDialog {
                 String customer = customerComboBox.getSelectedItem().toString();
 
                 //insert into transaction table here
-
+                String sql = String.format("INSERT INTO transaction VALUES('%s', '%d', '%f');", id, cust_id[0], Double.parseDouble(priceValueLabel.getText()));
+                PostgreSQLJDBC.updateToDatabase(sql);
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Sell successfully!", "Congrats",
                         JOptionPane.PLAIN_MESSAGE);

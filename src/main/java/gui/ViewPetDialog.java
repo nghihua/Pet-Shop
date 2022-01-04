@@ -144,6 +144,7 @@ public class ViewPetDialog extends JDialog {
                     //do nothing
                 } else {
                     //delete it
+                    p.deleteInfo();
                     System.out.println("Delete!");
                 }
             }

@@ -29,8 +29,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
     //constructor to set properties of frame
     MainFrame() {
-
-
         setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,24));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

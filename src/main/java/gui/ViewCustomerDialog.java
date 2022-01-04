@@ -1,8 +1,11 @@
 package gui;
 
+import objects.customers.Customer;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 
@@ -18,21 +21,27 @@ public class ViewCustomerDialog extends JDialog {
     private JButton submitButton;
     private JButton deleteButton;
 
-    ViewCustomerDialog(JDialog parent) {
+    ViewCustomerDialog(JDialog parent, int id) {
         super(parent, "View Customer Information", true);
         this.setSize(300,400);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
+        //set init info
+        Customer c = new Customer(id, true);
+        nameTextField.setText(c.getName());
+        phoneTextField.setText(Integer.toString(c.getPhone()));
+        discountTextField.setText((c.getDiscount() >= 0.0 )? Double.toString(c.getDiscount()) : "");
         //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-                String phone = phoneTextField.getText();
-                float discount = Float.parseFloat(discountTextField.getText());
+                int phone = Integer.parseInt(phoneTextField.getText());
+                double discount = (Objects.equals(discountTextField.getText(), "") ? -1 :Double.parseDouble(discountTextField.getText()));
 
-                System.out.println("Update: " + name + " " + phone + " " + discount);
+                c.updateInfo(name, phone, discount);
+                //System.out.println("Update: " + name + " " + phone + " " + discount);
 
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",

@@ -52,6 +52,11 @@ public class Pets {
                 "WHERE pet_id = '%s';", name, age, breed, price / 1.1, this.id);
         PostgreSQLJDBC.updateToDatabase(sql);
     }
+    public void deleteInfo()
+    {
+        String sql = String.format("DELETE FROM pet WHERE pet_id = '%s';", this.id);
+        PostgreSQLJDBC.updateToDatabase(sql);
+    }
     public String getName()
     {
         return this.name;

@@ -20,7 +20,7 @@ public class AddCustomerDialog extends JDialog {
 
     AddCustomerDialog(JFrame parent) {
         super(parent, "Add New Customer", true);
-        this.setSize(300,400);
+        this.setSize(600,400);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
@@ -35,7 +35,7 @@ public class AddCustomerDialog extends JDialog {
                 try {
                     Customer c = new Customer(name, phone, discount);
                     c.setInfo();
-                    System.out.println("Insert supply: " + name + " " + phone + " " + discount);
+                    //System.out.println("Insert supply: " + name + " " + phone + " " + discount);
                     JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
                             JOptionPane.PLAIN_MESSAGE);
                     //catch error and if no error, please do this
