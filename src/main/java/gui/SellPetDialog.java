@@ -78,8 +78,9 @@ public class SellPetDialog extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 //get currently selected customer, load the discount value and calculate the price
                 Customer c = new Customer(Integer.parseInt(customerComboBox.getSelectedItem().toString()), false);
-                discountValueLabel.setText(Double.toString(c.getDiscount()));
-                double cost = p.getPrice_in() * 1.1 * (1 - c.getDiscount());
+                double discount_val = Math.max(c.getDiscount(), 0.0);
+                discountValueLabel.setText(Double.toString(discount_val));
+                double cost = p.getPrice_in() * 1.1 * (1 - discount_val);
                 priceValueLabel.setText(Double.toString(cost));
                 cust_id[0] = c.getId();
             }

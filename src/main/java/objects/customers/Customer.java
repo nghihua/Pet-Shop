@@ -87,5 +87,9 @@ public class Customer {
     }
     public int getPhone()
     {return this.phone;}
-
+    public void deleteInfo()
+    {
+        String sql = String.format("DELETE FROM customer WHERE cust_id = '%d';",this.id);
+        PostgreSQLJDBC.updateToDatabase(sql);
+    }
 }

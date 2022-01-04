@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CheckCustomerDialog extends JDialog {
 
@@ -16,6 +17,7 @@ public class CheckCustomerDialog extends JDialog {
     private JLabel phoneLabel;
     private JLabel nameLabel;
     private JButton searchButton;
+    private JButton refreshButton;
     private JTextField phoneTextField;
     private JTextField nameTextField;
     private JPanel mainPanel;
@@ -25,7 +27,7 @@ public class CheckCustomerDialog extends JDialog {
 
     String[] loadAllCustomer()
     {
-        String sql = "SELECT cust_id FROM customer;";
+        String sql = "SELECT cust_id, cust_name FROM customer;";
         int no_of_cust = PostgreSQLJDBC.countResult(sql);
         String[] cid = new String[no_of_cust];
         try{
@@ -33,7 +35,8 @@ public class CheckCustomerDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                cid[idx] = Integer.toString(rs.getInt("cust_id"));
+                cid[idx] = Integer.toString(rs.getInt("cust_id")) +":" +
+                        rs.getString("cust_name");
                 idx++;
             }
             PostgreSQLJDBC.closeStatement();
@@ -70,7 +73,8 @@ public class CheckCustomerDialog extends JDialog {
                 }
                 else {
                     String val = listCustomer.getSelectedValue().toString();
-                    new ViewCustomerDialog(CheckCustomerDialog.this, Integer.parseInt(val));
+                    String[] v = val.split(":");
+                    new ViewCustomerDialog(CheckCustomerDialog.this, Integer.parseInt(v[0]));
                 }
             }
         });
@@ -87,6 +91,12 @@ public class CheckCustomerDialog extends JDialog {
             }
         });
 
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshCustomerList(loadAllCustomer());
+            }
+        });
         this.setVisible(true);
     }
 
