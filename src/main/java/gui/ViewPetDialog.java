@@ -29,7 +29,7 @@ public class ViewPetDialog extends JDialog {
 
     private DefaultComboBoxModel breedComboBoxModel;
 
-    ViewPetDialog(JDialog parent, String id) {
+    ViewPetDialog(CheckPetDialog parent, String id) {
         super(parent, "View Pet Information", true);
         this.setSize(300,500);
         this.setContentPane(mainPanel);
@@ -98,6 +98,8 @@ public class ViewPetDialog extends JDialog {
                     //delete it
                     p.deleteInfo();
                     System.out.println("Delete!");
+                    parent.resetDisplay();
+                    ViewPetDialog.this.dispose();
                 }
             }
         });

@@ -14,7 +14,7 @@ public class CheckPetDialog extends JDialog {
     private JList listPet;
     private JButton viewButton;
     private JButton searchButton;
-    private JButton refreshButton;
+    private JButton resetButton;
     private JComboBox speciesComboBox;
     private JComboBox breedComboBox;
     private JLabel speciesLabel;
@@ -91,13 +91,21 @@ public class CheckPetDialog extends JDialog {
             }
         });
 
-        refreshButton.addActionListener(new ActionListener() {
+        resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                refreshPetList(loadAllPetId());
+                resetDisplay();
             }
         });
         this.setVisible(true);
+    }
+
+    public void resetDisplay() {
+        refreshPetList(loadAllPetId());
+        minAgeSpinner.setValue(0);
+        maxAgeSpinner.setValue(0);
+        minPriceSpinner.setValue(0);
+        maxPriceSpinner.setValue(0);
     }
 
 

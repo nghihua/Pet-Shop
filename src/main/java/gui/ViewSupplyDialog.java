@@ -17,7 +17,7 @@ public class ViewSupplyDialog extends JDialog {
     private JButton deleteButton;
     private JButton sellButton;
 
-    ViewSupplyDialog(JDialog parent, String id) {
+    ViewSupplyDialog(CheckSupplyDialog parent, String id) {
         super(parent, "View Supply Information", true);
         this.setSize(300,300);
         this.setContentPane(mainPanel);
@@ -81,6 +81,8 @@ public class ViewSupplyDialog extends JDialog {
                     //delete it
                     supply.deleteInfo();
                     System.out.println("Delete!");
+                    parent.resetDisplay();
+                    ViewSupplyDialog.this.dispose();
                 }
             }
         });

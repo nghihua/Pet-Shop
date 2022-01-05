@@ -12,7 +12,6 @@ public class CheckSupplyDialog extends JDialog {
 
     private JPanel mainPanel;
     private JButton viewButton;
-    private JButton deleteButton;
     private JList listSupply;
     private JLabel minPriceLabel;
     private JLabel maxPriceLabel;
@@ -71,7 +70,7 @@ public class CheckSupplyDialog extends JDialog {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                refreshSupplyList(loadAllSupplyId());
+                resetDisplay();
             }
         });
 
@@ -86,8 +85,14 @@ public class CheckSupplyDialog extends JDialog {
         }
     }
 
+    public void resetDisplay() {
+        refreshSupplyList(loadAllSupplyId());
+        minPriceSpinner.setValue(0);
+        maxPriceSpinner.setValue(0);
+    }
+
     //methods for interacting with database
-    String[] loadAllSupplyId()
+    public String[] loadAllSupplyId()
     {
         String query = "SELECT supply_id FROM supply WHERE supply_id NOT IN (SELECT item_id FROM transaction);";
         int no_of_supply = PostgreSQLJDBC.countResult(query);
