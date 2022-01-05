@@ -55,7 +55,6 @@ public class SellPetDialog extends JDialog {
         //load pet
         Pets p = new Pets(id);
         //Store customer's id
-        final int[] cust_id = new int[1];
         //combo box
         customerComboBoxModel = new DefaultComboBoxModel();
         customerComboBox.setModel(customerComboBoxModel);
@@ -77,12 +76,11 @@ public class SellPetDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //get currently selected customer, load the discount value and calculate the price
-                Customer c = new Customer(Integer.parseInt(customerComboBox.getSelectedItem().toString()), false);
+                Customer c = new Customer(Integer.parseInt(customerComboBox.getSelectedItem().toString()));
                 double discount_val = Math.max(c.getDiscount(), 0.0);
                 discountValueLabel.setText(Double.toString(discount_val));
                 double cost = p.getPrice_in() * 1.1 * (1 - discount_val);
                 priceValueLabel.setText(Double.toString(cost));
-                cust_id[0] = c.getId();
             }
         });
 
@@ -92,7 +90,10 @@ public class SellPetDialog extends JDialog {
                 String customer = customerComboBox.getSelectedItem().toString();
 
                 //insert into transaction table here
-                String sql = String.format("INSERT INTO transaction VALUES('%s', '%d', '%f');", id, cust_id[0], Double.parseDouble(priceValueLabel.getText()));
+                int phone_no = Integer.parseInt(customerComboBox.getSelectedItem().toString());
+                double price_val = Double.parseDouble(priceValueLabel.getText());
+                String sql = String.format("INSERT INTO transaction(item_id, customer_phone, cash_in) " +
+                        "VALUES('%s','%d','%f');", id,phone_no,price_val);
                 PostgreSQLJDBC.updateToDatabase(sql);
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Sell successfully!", "Congrats",

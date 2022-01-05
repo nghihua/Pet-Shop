@@ -20,38 +20,20 @@ public class Customer {
         this.phone = phone;
         this.discount = discount;
     }
-    public Customer(int num, boolean isid)
+    public Customer(int phone)
     {
-        if (!isid) {
-            this.phone = num;
-            String sql = String.format("SELECT *,coalesce(discount, -1) FROM customer WHERE phone ='%d';", this.phone);
-            try {
-                ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
-                while (rs.next()) {
-                    this.name = rs.getString("cust_name");
-                    this.id = rs.getInt("cust_id");
-                    this.discount = rs.getDouble("coalesce");
-                }
-                PostgreSQLJDBC.closeStatement();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        this.phone = phone;
+        String sql = String.format("SELECT *,coalesce(discount, -1) FROM customer WHERE phone ='%d';", phone);
+        try {
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            while (rs.next()) {
+                this.name = rs.getString("cust_name");
+                this.id = rs.getInt("cust_id");
+                this.discount = rs.getDouble("coalesce");
             }
-        }
-        else
-        {
-            this.id = num;
-            String sql = String.format("SELECT *, coalesce(discount, -1) FROM customer WHERE cust_id ='%d';", this.id);
-            try {
-                ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
-                while (rs.next()) {
-                    this.name = rs.getString("cust_name");
-                    this.phone = rs.getInt("phone");
-                    this.discount = rs.getDouble("coalesce");
-                }
-                PostgreSQLJDBC.closeStatement();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            PostgreSQLJDBC.closeStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     public double getDiscount(){
