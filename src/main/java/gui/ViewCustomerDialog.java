@@ -24,14 +24,14 @@ public class ViewCustomerDialog extends JDialog {
     private void disposeDialog() {
         this.dispose();
     }
-    ViewCustomerDialog(JDialog parent, int phone) {
+    ViewCustomerDialog(JDialog parent, int id) {
         super(parent, "View Customer Information", true);
         this.setSize(300,400);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
         //set init info
-        Customer c = new Customer(phone);
+        Customer c = new Customer(id, true);
         nameTextField.setText(c.getName());
         phoneTextField.setText(Integer.toString(c.getPhone()));
         discountTextField.setText((c.getDiscount() >= 0.0 )? Double.toString(c.getDiscount()) : "");

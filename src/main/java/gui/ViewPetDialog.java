@@ -29,6 +29,84 @@ public class ViewPetDialog extends JDialog {
 
     private DefaultComboBoxModel breedComboBoxModel;
 
+    ViewPetDialog(CheckPetDialog parent, String id) {
+        super(parent, "View Pet Information", true);
+        this.setSize(300,500);
+        this.setContentPane(mainPanel);
+        this.setLocationRelativeTo(null);
+
+        //load initial data
+        Pets p = new Pets(id);
+        this.nameTextField.setText(p.getName());
+        this.ageTextField.setText(Integer.toString(p.getAge()));
+        this.priceTextField.setText(Double.toString(p.getPrice_in()*1.1));
+        //combo box
+        breedComboBoxModel = new DefaultComboBoxModel();
+        breedComboBox.setModel(breedComboBoxModel);
+        //load initial data
+        String[] breeds = loadAllBreeds(p.getSpecies());
+        refreshBreedComboBox(breeds);
+        breedComboBox.setSelectedIndex(getBreedIndex(p.getBreed(), breeds));
+
+        //action listeners
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    String name = nameTextField.getText();
+                    String breed = breedComboBox.getSelectedItem().toString();
+                    int age = parseInt(ageTextField.getText());
+                    double price = Double.parseDouble(priceTextField.getText());
+
+                    System.out.println("Update: " + name + breed + age + " " + price);
+                    p.updateInfo(name, age, breed, price);//notification in class Pets
+
+                    JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",
+                            JOptionPane.PLAIN_MESSAGE);
+                }
+                catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Age and price must be numbers!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        sellButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                //open sell pet dialog
+                new SellPetDialog(ViewPetDialog.this, id);
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                //warning before delete
+                int choice = JOptionPane.showOptionDialog(null,
+                        "Are you sure you want to delete?", //Object message,
+                        "Warning", //String title
+                        JOptionPane.OK_CANCEL_OPTION, //int optionType
+                        JOptionPane.QUESTION_MESSAGE, //int messageType
+                        null, //Icon icon,
+                        new String[]{"Cancel", "OK"}, //Object[] options,
+                        "Cancel");//Object initialValue
+                if (choice == 0 ){
+                    //do nothing
+                } else {
+                    //delete it
+                    p.deleteInfo();
+                    System.out.println("Delete!");
+                    parent.resetDisplay();
+                    ViewPetDialog.this.dispose();
+                }
+            }
+        });
+
+        this.setVisible(true);
+    }
+
     String[] loadAllSpecies()
     {
         String sql = "SELECT DISTINCT species FROM species;";
@@ -83,74 +161,6 @@ public class ViewPetDialog extends JDialog {
             }
         }
         return idx;
-    }
-
-    ViewPetDialog(JDialog parent, String id) {
-        super(parent, "View Pet Information", true);
-        this.setSize(300,500);
-        this.setContentPane(mainPanel);
-        this.setLocationRelativeTo(null);
-
-        //load initial data
-        Pets p = new Pets(id);
-        this.nameTextField.setText(p.getName());
-        this.ageTextField.setText(Integer.toString(p.getAge()));
-        this.priceTextField.setText(Double.toString(p.getPrice_in()*1.1));
-        //combo box
-        breedComboBoxModel = new DefaultComboBoxModel();
-        breedComboBox.setModel(breedComboBoxModel);
-        //load initial data
-        String[] breeds = loadAllBreeds(p.getSpecies());
-        refreshBreedComboBox(breeds);
-        breedComboBox.setSelectedIndex(getBreedIndex(p.getBreed(), breeds));
-
-        //action listeners
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                String name = nameTextField.getText();
-                String breed = breedComboBox.getSelectedItem().toString();
-                int age = parseInt(ageTextField.getText());
-                double price = Double.parseDouble(priceTextField.getText());
-
-                System.out.println("Update: " + name + breed + age + " " + price);
-                Pets p = new Pets(id);
-                p.updateInfo(name, age, breed, price);//notification in class Pets
-                //catch error and if no error, please do this
-                JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",
-                        JOptionPane.PLAIN_MESSAGE);
-            }
-        });
-        sellButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //open sell pet dialog
-                new SellPetDialog(ViewPetDialog.this, id);
-            }
-        });
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //warning before delete
-                int choice = JOptionPane.showOptionDialog(null,
-                        "Are you sure you want to delete?", //Object message,
-                        "Warning", //String title
-                        JOptionPane.OK_CANCEL_OPTION, //int optionType
-                        JOptionPane.QUESTION_MESSAGE, //int messageType
-                        null, //Icon icon,
-                        new String[]{"Cancel", "OK"}, //Object[] options,
-                        "Cancel");//Object initialValue
-                if (choice == 0 ){
-                    //do nothing
-                } else {
-                    //delete it
-                    p.deleteInfo();
-                    System.out.println("Delete!");
-                }
-            }
-        });
-
-        this.setVisible(true);
     }
 
     public void refreshBreedComboBox(String [] breeds) {

@@ -14,7 +14,7 @@ public class CheckPetDialog extends JDialog {
     private JList listPet;
     private JButton viewButton;
     private JButton searchButton;
-    private JButton refreshButton;
+    private JButton resetButton;
     private JComboBox speciesComboBox;
     private JComboBox breedComboBox;
     private JLabel speciesLabel;
@@ -31,7 +31,83 @@ public class CheckPetDialog extends JDialog {
     private DefaultListModel listPetModel;
     private DefaultComboBoxModel breedComboBoxModel;
     private DefaultComboBoxModel speciesComboBoxModel;
-    
+
+    CheckPetDialog(JFrame parent) {
+        super(parent, "Check Current Pets", true);
+        this.setSize(700,400);
+        this.setContentPane(mainPanel);
+        this.setLocationRelativeTo(null);
+
+        //list
+        listPetModel = new DefaultListModel();
+        listPet.setModel(listPetModel);
+        //load initial data
+        //refreshPetList(new String[]{"Toodle-Tuh", "Doggo", "Noob", "Tagalog"});
+        //load all pet id into
+        refreshPetList(loadAllPetId());
+        //combo box
+        speciesComboBoxModel = new DefaultComboBoxModel();
+        speciesComboBox.setModel(speciesComboBoxModel);
+        //refreshSpeciesComboBox(new String[]{"Cat", "Dog"});
+        refreshSpeciesComboBox(loadAllSpecies());
+        breedComboBoxModel = new DefaultComboBoxModel();
+        breedComboBox.setModel(breedComboBoxModel);
+        //refreshBreedComboBox(new String[]{"Main Coon", "Pitbull"});
+        //make the breed combo box to refresh each time a species is chosen;
+        speciesComboBox.addActionListener(action ->
+                refreshBreedComboBox(loadAllBreeds(speciesComboBox.getSelectedItem().toString()))
+        );
+
+
+        //action listeners
+        viewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int petIndex = listPet.getSelectedIndex();
+                //if no pet is selected
+                if (petIndex == -1) {
+                    JOptionPane.showMessageDialog(null, "You haven't selected a pet!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    //add the id of the pet selected to the viewpetdialog
+                    System.out.println(listPet.getSelectedValue().toString());
+                    new ViewPetDialog(CheckPetDialog.this, listPet.getSelectedValue().toString());
+                }
+            }
+        });
+
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                //retrieve data from database, replace current data
+                String selectedSpecies = String.valueOf(speciesComboBox.getSelectedItem());
+                String selectedBreed = String.valueOf(breedComboBox.getSelectedItem());
+                int minAge = (int) minAgeSpinner.getValue();
+                int maxAge = (int) maxAgeSpinner.getValue();
+                int minPrice = (int) minPriceSpinner.getValue();
+                int maxPrice = (int) maxPriceSpinner.getValue();
+                refreshPetList(loadSearchedPets(selectedBreed, minAge, maxAge,minPrice, maxPrice));
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetDisplay();
+            }
+        });
+        this.setVisible(true);
+    }
+
+    public void resetDisplay() {
+        refreshPetList(loadAllPetId());
+        minAgeSpinner.setValue(0);
+        maxAgeSpinner.setValue(0);
+        minPriceSpinner.setValue(0);
+        maxPriceSpinner.setValue(0);
+    }
+
 
     String[] loadAllPetId()
     {
@@ -118,77 +194,6 @@ public class CheckPetDialog extends JDialog {
         }
         return pet_ids;
     }
-
-    CheckPetDialog(JFrame parent) {
-        super(parent, "Check Current Pets", true);
-        this.setSize(800,400);
-        this.setContentPane(mainPanel);
-        this.setLocationRelativeTo(null);
-
-        //list
-        listPetModel = new DefaultListModel();
-        listPet.setModel(listPetModel);
-        //load initial data
-        //refreshPetList(new String[]{"Toodle-Tuh", "Doggo", "Noob", "Tagalog"});
-        //load all pet id into
-        refreshPetList(loadAllPetId());
-        //combo box
-        speciesComboBoxModel = new DefaultComboBoxModel();
-        speciesComboBox.setModel(speciesComboBoxModel);
-        //refreshSpeciesComboBox(new String[]{"Cat", "Dog"});
-        refreshSpeciesComboBox(loadAllSpecies());
-        breedComboBoxModel = new DefaultComboBoxModel();
-        breedComboBox.setModel(breedComboBoxModel);
-        //refreshBreedComboBox(new String[]{"Main Coon", "Pitbull"});
-        //make the breed combo box to refresh each time a species is chosen;
-        speciesComboBox.addActionListener(action ->
-            refreshBreedComboBox(loadAllBreeds(speciesComboBox.getSelectedItem().toString()))
-        );
-
-
-        //action listeners
-        viewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                int petIndex = listPet.getSelectedIndex();
-                //if no pet is selected
-                if (petIndex == -1) {
-                    JOptionPane.showMessageDialog(null, "You haven't selected a pet!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-                else {
-                    //view pet also
-                    //add the id of the pet selected to the viewpetdialog
-                    System.out.println(listPet.getSelectedValue().toString());
-                    new ViewPetDialog(CheckPetDialog.this, listPet.getSelectedValue().toString());
-                }
-            }
-        });
-
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //retrieve data from database, replace current data
-                String selectedSpecies = String.valueOf(speciesComboBox.getSelectedItem());
-                String selectedBreed = String.valueOf(breedComboBox.getSelectedItem());
-                int minAge = (int) minAgeSpinner.getValue();
-                int maxAge = (int) maxAgeSpinner.getValue();
-                int minPrice = (int) minPriceSpinner.getValue();
-                int maxPrice = (int) maxPriceSpinner.getValue();
-                refreshPetList(loadSearchedPets(selectedBreed, minAge, maxAge,minPrice, maxPrice));
-            }
-        });
-
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshPetList(loadAllPetId());
-            }
-        });
-        this.setVisible(true);
-    }
-
-
 
     public void refreshPetList(String [] pets) {
         listPetModel.removeAllElements();
