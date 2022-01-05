@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static java.lang.Integer.parseInt;
-
 public class SellPetDialog extends JDialog {
 
     private JPanel mainPanel;
@@ -25,27 +23,6 @@ public class SellPetDialog extends JDialog {
 
     private DefaultComboBoxModel customerComboBoxModel;
 
-    String[] loadCustomerPhone()
-    {
-        String sql = "SELECT phone FROM customer;";
-        int no_of_customer = PostgreSQLJDBC.countResult(sql);
-        String[] phones = new String[no_of_customer];
-        try{
-            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
-            int idx = 0;
-            while(rs.next())
-            {
-                phones[idx] = Integer.toString(rs.getInt("phone"));
-                idx ++;
-            }
-            PostgreSQLJDBC.closeStatement();
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return phones;
-    }
     SellPetDialog(JDialog parent, String id) {
         super(parent, "Sell Pet", true);
         this.setSize(600,300);
@@ -54,22 +31,14 @@ public class SellPetDialog extends JDialog {
 
         //load pet
         Pets p = new Pets(id);
-        //Store customer's id
+        //store customer's id
         //combo box
         customerComboBoxModel = new DefaultComboBoxModel();
         customerComboBox.setModel(customerComboBoxModel);
 
         //load initial data
-        //refreshCustomerComboBox(new String[]{"091738174", "09213810"});
-        refreshCustomerComboBox(loadCustomerPhone());
-        //load customer info to an object and bla bla
         //by default, the first customer in the list is selected
-        //load that customer's discount value and calculate the price here
-        //String customer = customerComboBox.getSelectedItem().toString();
-        //discountValueLabel.setText("0.2");
-        //priceValueLabel.setText("100");
-
-        //action listeners
+        refreshCustomerComboBox(loadCustomerPhone());
 
         //everytime reselect customer, this method is fired
         customerComboBox.addActionListener(new ActionListener() {
@@ -95,6 +64,7 @@ public class SellPetDialog extends JDialog {
                 String sql = String.format("INSERT INTO transaction(item_id, customer_phone, cash_in) " +
                         "VALUES('%s','%d','%f');", id,phone_no,price_val);
                 PostgreSQLJDBC.updateToDatabase(sql);
+
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Sell successfully!", "Congrats",
                         JOptionPane.PLAIN_MESSAGE);
@@ -106,6 +76,27 @@ public class SellPetDialog extends JDialog {
         });
 
         this.setVisible(true);
+    }
+
+    String[] loadCustomerPhone() {
+        String sql = "SELECT phone FROM customer;";
+        int no_of_customer = PostgreSQLJDBC.countResult(sql);
+        String[] phones = new String[no_of_customer];
+        try{
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            int idx = 0;
+            while(rs.next())
+            {
+                phones[idx] = Integer.toString(rs.getInt("phone"));
+                idx ++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return phones;
     }
 
     public void refreshCustomerComboBox(String [] customers) {
