@@ -157,7 +157,6 @@ public class CheckCustomerDialog extends JDialog {
                 String name = nameTextField.getText();
                 if(Objects.equals(phone, "") && Objects.equals(name, ""))
                 {
-
                     refreshCustomerList(loadAllCustomer());
                 }
                 else if(Objects.equals(name, ""))
@@ -168,7 +167,8 @@ public class CheckCustomerDialog extends JDialog {
                 {
                     refreshCustomerList(loadCustomerByName(name));
                 }
-                else{
+                else
+                {
                     refreshCustomerList(loadCustomerByPhoneAndName(Integer.parseInt(phone), name));
                 }
                 //fetch data from database and call refreshCustomerList here
