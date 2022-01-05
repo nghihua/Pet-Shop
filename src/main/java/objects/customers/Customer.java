@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Customer {
-    int id;
     String name;
     int phone; //phone can be null
     double discount; //discount = -1 means guest
@@ -28,7 +27,6 @@ public class Customer {
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
             while (rs.next()) {
                 this.name = rs.getString("cust_name");
-                this.id = rs.getInt("cust_id");
                 this.discount = rs.getDouble("coalesce");
             }
             PostgreSQLJDBC.closeStatement();
@@ -50,28 +48,22 @@ public class Customer {
         String exec_sql = (this.discount >= 0.0) ? sql : sql2;
         PostgreSQLJDBC.updateToDatabase(exec_sql);
     }
-    public void updateInfo(String name, int phone, double discount)
+    public void updateInfo(String name, int new_phone, double discount)
     {
         String sql = String.format("UPDATE customer SET cust_name = '%s', phone = '%d', discount =" +
-                " '%f' WHERE cust_id = '%d';", name, phone, discount, this.id);
+                " '%f' WHERE phone = '%d';", name, new_phone, discount, this.phone);
         String sql2 = String.format("UPDATE customer SET cust_name = '%s', phone = '%d', discount = NULL" +
-                "  WHERE cust_id = '%d';", name, phone, this.id);
+                "  WHERE phone = '%d';", name, new_phone, this.phone);
         String fsql = (discount >= 0.0) ? sql : sql2;
         PostgreSQLJDBC.updateToDatabase(fsql);
-    }
-    public int getId()
-    {
-        return this.id;
     }
     public String getName()
     {
         return this.name;
     }
-    public int getPhone()
-    {return this.phone;}
     public void deleteInfo()
     {
-        String sql = String.format("DELETE FROM customer WHERE cust_id = '%d';",this.id);
+        String sql = String.format("DELETE FROM customer WHERE phone = '%d';",this.phone);
         PostgreSQLJDBC.updateToDatabase(sql);
     }
 }

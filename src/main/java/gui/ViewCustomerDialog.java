@@ -33,17 +33,17 @@ public class ViewCustomerDialog extends JDialog {
         //set init info
         Customer c = new Customer(phone);
         nameTextField.setText(c.getName());
-        phoneTextField.setText(Integer.toString(c.getPhone()));
+        phoneTextField.setText(Integer.toString(phone));
         discountTextField.setText((c.getDiscount() >= 0.0 )? Double.toString(c.getDiscount()) : "");
         //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-                int phone = Integer.parseInt(phoneTextField.getText());
+                int new_phone = Integer.parseInt(phoneTextField.getText());//new phone
                 double discount = (Objects.equals(discountTextField.getText(), "") ? -1 :Double.parseDouble(discountTextField.getText()));
 
-                c.updateInfo(name, phone, discount);
+                c.updateInfo(name, new_phone, discount);
                 //System.out.println("Update: " + name + " " + phone + " " + discount);
 
                 //catch error and if no error, please do this
