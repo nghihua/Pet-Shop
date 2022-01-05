@@ -87,6 +87,16 @@ public class CheckPetDialog extends JDialog {
                 int maxAge = (int) maxAgeSpinner.getValue();
                 int minPrice = (int) minPriceSpinner.getValue();
                 int maxPrice = (int) maxPriceSpinner.getValue();
+                //if minPrice is larger than maxPrice, pops up error dialog
+                if (minPrice>maxPrice) {
+                    JOptionPane.showMessageDialog(null, "Max price must be larger than min price!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                //if minAge is larger than maxAge, pops up error dialog
+                if (minAge>maxAge) {
+                    JOptionPane.showMessageDialog(null, "Max age must be larger than min age!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
                 refreshPetList(loadSearchedPets(selectedBreed, minAge, maxAge,minPrice, maxPrice));
             }
         });
