@@ -38,22 +38,22 @@ public class CheckPetDialog extends JDialog {
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
-        //list
+        //pet list
         listPetModel = new DefaultListModel();
         listPet.setModel(listPetModel);
-        //load initial data
-        //refreshPetList(new String[]{"Toodle-Tuh", "Doggo", "Noob", "Tagalog"});
-        //load all pet id into
         refreshPetList(loadAllPetId());
-        //combo box
+
+        //species combo box
         speciesComboBoxModel = new DefaultComboBoxModel();
         speciesComboBox.setModel(speciesComboBoxModel);
-        //refreshSpeciesComboBox(new String[]{"Cat", "Dog"});
         refreshSpeciesComboBox(loadAllSpecies());
+        //set default selected value as blank
+        speciesComboBox.setSelectedIndex(-1);
+
+        //breeds combo box
         breedComboBoxModel = new DefaultComboBoxModel();
         breedComboBox.setModel(breedComboBoxModel);
-        //refreshBreedComboBox(new String[]{"Main Coon", "Pitbull"});
-        //make the breed combo box to refresh each time a species is chosen;
+        //make the breed combo box to refresh each time a species is chosen
         speciesComboBox.addActionListener(action ->
                 refreshBreedComboBox(loadAllBreeds(speciesComboBox.getSelectedItem().toString()))
         );

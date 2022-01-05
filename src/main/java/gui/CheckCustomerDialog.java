@@ -112,18 +112,16 @@ public class CheckCustomerDialog extends JDialog {
         String sql = String.format("SELECT phone FROM customer WHERE phone = %d;", phone);
         int no_of_cust = PostgreSQLJDBC.countResult(sql);
         String[] customers = new String[no_of_cust];
-        try{
+        try {
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
             int idx = 0;
-            while(rs.next())
-            {
+            while(rs.next()) {
                 customers[idx] = Integer.toString(rs.getInt("phone"));
                 idx++;
             }
             PostgreSQLJDBC.closeStatement();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             e.printStackTrace();
         }
         return customers;

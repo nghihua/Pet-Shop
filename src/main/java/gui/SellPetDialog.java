@@ -31,14 +31,14 @@ public class SellPetDialog extends JDialog {
 
         //load pet
         Pets p = new Pets(id);
-        //store customer's id
+
         //combo box
         customerComboBoxModel = new DefaultComboBoxModel();
         customerComboBox.setModel(customerComboBoxModel);
 
-        //load initial data
-        //by default, the first customer in the list is selected
+        //load customers, set default selected value as blank
         refreshCustomerComboBox(loadCustomerPhone());
+        customerComboBox.setSelectedIndex(-1);
 
         //everytime reselect customer, this method is fired
         customerComboBox.addActionListener(new ActionListener() {
