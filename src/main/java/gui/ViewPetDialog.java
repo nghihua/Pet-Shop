@@ -52,16 +52,25 @@ public class ViewPetDialog extends JDialog {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String name = nameTextField.getText();
-                String breed = breedComboBox.getSelectedItem().toString();
-                int age = parseInt(ageTextField.getText());
-                double price = Double.parseDouble(priceTextField.getText());
+                try {
+                    String name = nameTextField.getText();
+                    String breed = breedComboBox.getSelectedItem().toString();
+                    int age = parseInt(ageTextField.getText());
+                    double price = Double.parseDouble(priceTextField.getText());
 
-                System.out.println("Update: " + name + breed + age + " " + price);
-                p.updateInfo(name, age, breed, price);//notification in class Pets
-                //catch error and if no error, please do this
-                JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",
-                        JOptionPane.PLAIN_MESSAGE);
+                    System.out.println("Update: " + name + breed + age + " " + price);
+                    p.updateInfo(name, age, breed, price);//notification in class Pets
+
+                    JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",
+                            JOptionPane.PLAIN_MESSAGE);
+                }
+                catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Age and price must be numbers!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         sellButton.addActionListener(new ActionListener() {

@@ -44,27 +44,36 @@ public class AddPetDialog extends JDialog {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String name = nameTextField.getText();
-                String breed = Objects.requireNonNull(breedComboBox.getSelectedItem()).toString();
-                int age = Integer.parseInt(ageTextField.getText());
-                double price = Double.parseDouble(priceTextField.getText());
+                try {
+                    String name = nameTextField.getText();
+                    String breed = Objects.requireNonNull(breedComboBox.getSelectedItem()).toString();
+                    int age = Integer.parseInt(ageTextField.getText());
+                    double price = Double.parseDouble(priceTextField.getText());
 
-                if (mode.equals("dog")) {
-                    //insert dog here
-                    // create dog object with parameters and save to database
-                    Dog d = new Dog(name, age, price, breed);
-                    d.setInfo();
-                    System.out.println("Insert dog: " + name + breed + age + " " + price);
+                    if (mode.equals("dog")) {
+                        //insert dog here
+                        // create dog object with parameters and save to database
+                        Dog d = new Dog(name, age, price, breed);
+                        d.setInfo();
+                        System.out.println("Insert dog: " + name + breed + age + " " + price);
+                    }
+                    else if (mode.equals("cat")) {
+                        //insert cat here
+                        Cat c = new Cat(name, age, price, breed);
+                        c.setInfo();
+                        System.out.println("Insert cat: " + name + breed + age + " " + price);
+                    }
+
+                    JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
+                            JOptionPane.PLAIN_MESSAGE);
                 }
-                else if (mode.equals("cat")) {
-                    //insert cat here
-                    Cat c = new Cat(name, age, price, breed);
-                    c.setInfo();
-                    System.out.println("Insert cat: " + name + breed + age + " " + price);
+                catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Age and price must be numbers!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
-                //catch error and if no error, please do this
-                JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
-                        JOptionPane.PLAIN_MESSAGE);
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
