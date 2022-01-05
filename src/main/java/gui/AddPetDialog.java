@@ -45,7 +45,6 @@ public class AddPetDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-//                String breed = breedComboBox.getSelectedItem().toString();
                 String breed = Objects.requireNonNull(breedComboBox.getSelectedItem()).toString();
                 int age = Integer.parseInt(ageTextField.getText());
                 double price = Double.parseDouble(priceTextField.getText());
@@ -117,7 +116,6 @@ public class AddPetDialog extends JDialog {
         else if (choice == 0 ) {
             //load Dog's breeds into combo box
             // Select breed where species = dog
-            //String breeds[] = {"Golden Retriever", "Poodles", "Pitbull"};
             String[] breeds = getBreed("Dog");
             refreshBreedComboBox(breeds);
             //set mode to "dog"
@@ -125,7 +123,6 @@ public class AddPetDialog extends JDialog {
         }
         else{
             //load Cat's breeds into combo box
-            //String breeds[] = {"Main Coon", "British Short Hair", "Siamese"};
             String[] breeds = getBreed("Cat");
             refreshBreedComboBox(breeds);
             //set mode to "cat"

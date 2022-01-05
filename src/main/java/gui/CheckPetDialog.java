@@ -121,7 +121,7 @@ public class CheckPetDialog extends JDialog {
 
     CheckPetDialog(JFrame parent) {
         super(parent, "Check Current Pets", true);
-        this.setSize(800,400);
+        this.setSize(700,400);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
@@ -157,7 +157,6 @@ public class CheckPetDialog extends JDialog {
                             JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-                    //view pet also
                     //add the id of the pet selected to the viewpetdialog
                     System.out.println(listPet.getSelectedValue().toString());
                     new ViewPetDialog(CheckPetDialog.this, listPet.getSelectedValue().toString());
