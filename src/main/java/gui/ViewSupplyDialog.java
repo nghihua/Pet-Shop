@@ -58,7 +58,7 @@ public class ViewSupplyDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //open sell supply window
-                new SellSupplyDialog(ViewSupplyDialog.this);
+                new SellSupplyDialog(ViewSupplyDialog.this, id);
             }
         });
 

@@ -35,7 +35,7 @@ public class SellPetDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                phones[idx] = rs.getString("phone");
+                phones[idx] = Integer.toString(rs.getInt("phone"));
                 idx ++;
             }
             PostgreSQLJDBC.closeStatement();
@@ -62,14 +62,7 @@ public class SellPetDialog extends JDialog {
         //load initial data
         //refreshCustomerComboBox(new String[]{"091738174", "09213810"});
         refreshCustomerComboBox(loadCustomerPhone());
-        //load customer info to an object and bla bla
-        //by default, the first customer in the list is selected
-        //load that customer's discount value and calculate the price here
-        //String customer = customerComboBox.getSelectedItem().toString();
-        //discountValueLabel.setText("0.2");
-        //priceValueLabel.setText("100");
-
-        //action listeners
+        customerComboBox.setSelectedIndex(-1);
 
         //everytime reselect customer, this method is fired
         customerComboBox.addActionListener(new ActionListener() {
