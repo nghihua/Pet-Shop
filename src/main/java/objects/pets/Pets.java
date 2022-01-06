@@ -49,7 +49,7 @@ public class Pets {
     public void updateInfo(String name, int age, String breed, double price)
     {
         String sql = String.format("UPDATE pet SET pet_name = '%s', age = %d, breed = '%s', price_in = %f " +
-                "WHERE pet_id = '%s';", name, age, breed, price / 1.1, this.id);
+                "WHERE pet_id = '%s';", name, age, breed, price, this.id);
         PostgreSQLJDBC.updateToDatabase(sql);
     }
     public void deleteInfo()
