@@ -71,7 +71,7 @@ public class CheckPetDialog extends JDialog {
                 }
                 else {
                     //add the id of the pet selected to the viewpetdialog
-                    System.out.println(listPet.getSelectedValue().toString());
+                    //System.out.println(listPet.getSelectedValue().toString());
                     new ViewPetDialog(CheckPetDialog.this, listPet.getSelectedValue().toString());
                 }
             }
