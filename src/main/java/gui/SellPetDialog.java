@@ -35,7 +35,7 @@ public class SellPetDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                phones[idx] = Integer.toString(rs.getInt("phone"));
+                phones[idx] = (rs.getString("phone"));
                 idx ++;
             }
             PostgreSQLJDBC.closeStatement();

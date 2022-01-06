@@ -141,7 +141,7 @@ public class CheckCustomerDialog extends JDialog {
                 }
                 else {
                     String val = listCustomer.getSelectedValue().toString();
-                    new ViewCustomerDialog(CheckCustomerDialog.this, Integer.parseInt(val));
+                    new ViewCustomerDialog(CheckCustomerDialog.this, (val));
                 }
             }
         });
@@ -160,14 +160,14 @@ public class CheckCustomerDialog extends JDialog {
                 }
                 else if(Objects.equals(name, ""))
                 {
-                    refreshCustomerList(loadCustomerByPhone(Integer.parseInt(phone)));
+                    refreshCustomerList(loadCustomerByPhone((phone)));
                 }
                 else if(Objects.equals(phone, ""))
                 {
                     refreshCustomerList(loadCustomerByName(name));
                 }
                 else{
-                    refreshCustomerList(loadCustomerByPhoneAndName(Integer.parseInt(phone), name));
+                    refreshCustomerList(loadCustomerByPhoneAndName((phone), name));
                 }
                 //fetch data from database and call refreshCustomerList here
                 //refreshCustomerList(fetchDataBasedOnConditions(phone, name));

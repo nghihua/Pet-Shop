@@ -46,7 +46,7 @@ public class SellSupplyDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //get currently selected customer, load the discount value and calculate the price
-                Customer c = new Customer(Integer.parseInt(customerComboBox.getSelectedItem().toString()));
+                Customer c = new Customer((customerComboBox.getSelectedItem().toString()));
                 double discount_val = Math.max(c.getDiscount(), 0.0);
                 discountValueLabel.setText(Double.toString(discount_val));
                 double cost = supply.getPrice() * 1.1 * (1 - discount_val);
