@@ -12,7 +12,7 @@ public class Pets {
     protected String species;
     protected String breed;
     protected double price_in;
-    Pets(String name, int age, double price_in)
+    public Pets(String name, int age, double price_in)
     {
         this.name = name;
         this.age = age;
@@ -48,7 +48,7 @@ public class Pets {
     }
     public void updateInfo(String name, int age, String breed, double price)
     {
-        String sql = String.format("UPDATE pet SET pet_name = '%s', age = '%d', breed = '%s', price_in = '%f' " +
+        String sql = String.format("UPDATE pet SET pet_name = '%s', age = %d, breed = '%s', price_in = '%f' " +
                 "WHERE pet_id = '%s';", name, age, breed, price / 1.1, this.id);
         PostgreSQLJDBC.updateToDatabase(sql);
     }
