@@ -6,11 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Customer {
-    String name;
-    String phone; //phone can be null
-    double discount; //discount = -1 means guest
-    public Customer(String name, String phone, double discount) throws Exception
-    {
+    
+    private String name;
+    private String phone;
+    private double discount; //discount = -1 means guest
+    
+    public Customer(String name, String phone, double discount) throws Exception {
         if(discount > 1.0)
         {
             throw new Exception();
@@ -57,8 +58,7 @@ public class Customer {
         String fsql = (discount >= 0.0) ? sql : sql2;
         PostgreSQLJDBC.updateToDatabase(fsql);
     }
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     public void deleteInfo()
