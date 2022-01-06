@@ -35,7 +35,7 @@ public class SellPetDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                phones[idx] = Integer.toString(rs.getInt("phone"));
+                phones[idx] = rs.getString("phone");
                 idx ++;
             }
             PostgreSQLJDBC.closeStatement();
@@ -76,7 +76,7 @@ public class SellPetDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //get currently selected customer, load the discount value and calculate the price
-                Customer c = new Customer(Integer.parseInt(customerComboBox.getSelectedItem().toString()));
+                Customer c = new Customer(customerComboBox.getSelectedItem().toString());
                 double discount_val = Math.max(c.getDiscount(), 0.0);
                 discountValueLabel.setText(Double.toString(discount_val));
                 double cost = p.getPrice_in() * 1.1 * (1 - discount_val);
@@ -90,10 +90,10 @@ public class SellPetDialog extends JDialog {
                 String customer = customerComboBox.getSelectedItem().toString();
 
                 //insert into transaction table here
-                int phone_no = Integer.parseInt(customerComboBox.getSelectedItem().toString());
+                String phone_no = customerComboBox.getSelectedItem().toString();
                 double price_val = Double.parseDouble(priceValueLabel.getText());
                 String sql = String.format("INSERT INTO transaction(item_id, customer_phone, cash_in) " +
-                        "VALUES('%s','%d','%f');", id,phone_no,price_val);
+                        "VALUES('%s','%s','%f');", id,phone_no,price_val);
                 PostgreSQLJDBC.updateToDatabase(sql);
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Sell successfully!", "Congrats",

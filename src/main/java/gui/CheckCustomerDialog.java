@@ -36,7 +36,7 @@ public class CheckCustomerDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                cid[idx] = Integer.toString(rs.getInt("phone"));
+                cid[idx] = rs.getString("phone");
                 idx++;
             }
             PostgreSQLJDBC.closeStatement();
@@ -48,9 +48,9 @@ public class CheckCustomerDialog extends JDialog {
         return cid;
     }
 
-    String[] loadCustomerByPhone(int phone)
+    String[] loadCustomerByPhone(String phone)
     {
-        String sql = String.format("SELECT phone FROM customer WHERE phone = %d;", phone);
+        String sql = String.format("SELECT phone FROM customer WHERE phone = '%s';", phone);
         int no_of_cust = PostgreSQLJDBC.countResult(sql);
         String[] customers = new String[no_of_cust];
         try{
@@ -58,7 +58,7 @@ public class CheckCustomerDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                customers[idx] = Integer.toString(rs.getInt("phone"));
+                customers[idx] = rs.getString("phone");
                 idx++;
             }
             PostgreSQLJDBC.closeStatement();
@@ -80,7 +80,7 @@ public class CheckCustomerDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                customers[idx] = Integer.toString(rs.getInt("phone"));
+                customers[idx] = rs.getString("phone");
                 idx++;
             }
             PostgreSQLJDBC.closeStatement();
@@ -92,9 +92,9 @@ public class CheckCustomerDialog extends JDialog {
         return customers;
     }
 
-    String[] loadCustomerByPhoneAndName(int phone, String name)
+    String[] loadCustomerByPhoneAndName(String phone, String name)
     {
-        String sql = String.format("SELECT phone FROM customer WHERE phone = %d AND cust_name = '%s';", phone, name);
+        String sql = String.format("SELECT phone FROM customer WHERE phone = '%s' AND cust_name = '%s';", phone, name);
         int no_of_cust = PostgreSQLJDBC.countResult(sql);
         String[] customers = new String[no_of_cust];
         try{
@@ -102,7 +102,7 @@ public class CheckCustomerDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                customers[idx] = Integer.toString(rs.getInt("phone"));
+                customers[idx] = rs.getString("phone");
                 idx++;
             }
             PostgreSQLJDBC.closeStatement();
@@ -141,7 +141,7 @@ public class CheckCustomerDialog extends JDialog {
                 }
                 else {
                     String val = listCustomer.getSelectedValue().toString();
-                    new ViewCustomerDialog(CheckCustomerDialog.this, Integer.parseInt(val));
+                    new ViewCustomerDialog(CheckCustomerDialog.this, val);
                 }
             }
         });
@@ -160,14 +160,14 @@ public class CheckCustomerDialog extends JDialog {
                 }
                 else if(Objects.equals(name, ""))
                 {
-                    refreshCustomerList(loadCustomerByPhone(Integer.parseInt(phone)));
+                    refreshCustomerList(loadCustomerByPhone(phone));
                 }
                 else if(Objects.equals(phone, ""))
                 {
                     refreshCustomerList(loadCustomerByName(name));
                 }
                 else{
-                    refreshCustomerList(loadCustomerByPhoneAndName(Integer.parseInt(phone), name));
+                    refreshCustomerList(loadCustomerByPhoneAndName(phone, name));
                 }
                 //fetch data from database and call refreshCustomerList here
                 //refreshCustomerList(fetchDataBasedOnConditions(phone, name));

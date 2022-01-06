@@ -29,7 +29,7 @@ public class AddCustomerDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-                int phone = Integer.parseInt(phoneTextField.getText());
+                String phone = phoneTextField.getText();
                 float discount = (Objects.equals(discountTextField.getText(), "")) ? -1 : Float.parseFloat(discountTextField.getText());
 
                 try {

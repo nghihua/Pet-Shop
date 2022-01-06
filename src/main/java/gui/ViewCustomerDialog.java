@@ -24,7 +24,7 @@ public class ViewCustomerDialog extends JDialog {
     private void disposeDialog() {
         this.dispose();
     }
-    ViewCustomerDialog(JDialog parent, int phone) {
+    ViewCustomerDialog(JDialog parent, String phone) {
         super(parent, "View Customer Information", true);
         this.setSize(300,400);
         this.setContentPane(mainPanel);
@@ -33,14 +33,14 @@ public class ViewCustomerDialog extends JDialog {
         //set init info
         Customer c = new Customer(phone);
         nameTextField.setText(c.getName());
-        phoneTextField.setText(Integer.toString(phone));
+        phoneTextField.setText(phone);
         discountTextField.setText((c.getDiscount() >= 0.0 )? Double.toString(c.getDiscount()) : "");
         //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
-                int new_phone = Integer.parseInt(phoneTextField.getText());//new phone
+                String new_phone = phoneTextField.getText();//new phone
                 double discount = (Objects.equals(discountTextField.getText(), "") ? -1 :Double.parseDouble(discountTextField.getText()));
 
                 c.updateInfo(name, new_phone, discount);
