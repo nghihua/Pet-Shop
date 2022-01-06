@@ -15,7 +15,7 @@ public class Pets {
     protected double price_in;
     
     //constructor for pets not yet in database
-    public Pets(String name, int age, double price_in)
+    protected Pets(String name, int age, double price_in)
     {
         this.name = name;
         this.age = age;
@@ -23,7 +23,7 @@ public class Pets {
     }
     
     //constructor for pets already exist in database
-    public Pets(String id)
+    protected Pets(String id)
     {
         String sql = String.format("SELECT * FROM pet p JOIN species s on (p.breed = s.breed) " +
                 "WHERE p.pet_id = '%s';", id);
