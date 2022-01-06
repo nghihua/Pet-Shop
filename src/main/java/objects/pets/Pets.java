@@ -6,18 +6,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Pets {
+    
     protected String id;
     protected String name;
     protected int age;
     protected String species;
     protected String breed;
     protected double price_in;
-    Pets(String name, int age, double price_in)
+    
+    //constructor for pets not yet in database
+    public Pets(String name, int age, double price_in)
     {
         this.name = name;
         this.age = age;
         this.price_in = price_in;
     }
+    
+    //constructor for pets already exist in database
     public Pets(String id)
     {
         String sql = String.format("SELECT * FROM pet p JOIN species s on (p.breed = s.breed) " +
