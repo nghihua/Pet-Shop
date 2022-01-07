@@ -12,7 +12,8 @@ public class Pets {
     protected String species;
     protected String breed;
     protected double price_in;
-    protected Pets(String name, int age, double price_in)
+
+    public Pets(String name, int age, double price_in)
     {
         this.name = name;
         this.age = age;
