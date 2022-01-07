@@ -62,24 +62,18 @@ public class CheckCustomerDialog extends JDialog {
                 //search by name or by phone
                 String phone = phoneTextField.getText();
                 String name = nameTextField.getText();
-                if(Objects.equals(phone, "") && Objects.equals(name, ""))
-                {
-
+                if(Objects.equals(phone, "") && Objects.equals(name, "")) {
                     refreshCustomerList(loadAllCustomer());
                 }
-                else if(Objects.equals(name, ""))
-                {
+                else if(Objects.equals(name, "")) {
                     refreshCustomerList(loadCustomerByPhone((phone)));
                 }
-                else if(Objects.equals(phone, ""))
-                {
+                else if(Objects.equals(phone, "")) {
                     refreshCustomerList(loadCustomerByName(name));
                 }
-                else{
+                else {
                     refreshCustomerList(loadCustomerByPhoneAndName((phone), name));
                 }
-                //fetch data from database and call refreshCustomerList here
-                //refreshCustomerList(fetchDataBasedOnConditions(phone, name));
             }
         });
 
@@ -116,7 +110,7 @@ public class CheckCustomerDialog extends JDialog {
 
     String[] loadCustomerByPhone(String phone)
     {
-        String sql = String.format("SELECT phone FROM customer WHERE phone = '%s';", phone);
+        String sql = String.format("SELECT phone FROM customer WHERE phone ~* '%s';", phone);
         int no_of_cust = PostgreSQLJDBC.countResult(sql);
         String[] customers = new String[no_of_cust];
         try{
