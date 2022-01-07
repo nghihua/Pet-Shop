@@ -5,7 +5,7 @@ import database.PostgreSQLJDBC;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Pets {
+public class Pets implements PetInterface {
     protected String id;
     protected String name;
     protected int age;

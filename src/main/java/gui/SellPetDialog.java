@@ -22,7 +22,6 @@ public class SellPetDialog extends JDialog {
     private JButton confirmButton;
     private JLabel discountValueLabel;
     private JLabel priceValueLabel;
-
     private DefaultComboBoxModel customerComboBoxModel;
 
     String[] loadCustomerPhone()
@@ -46,7 +45,7 @@ public class SellPetDialog extends JDialog {
         }
         return phones;
     }
-    SellPetDialog(JDialog parent, String id) {
+    SellPetDialog(ViewPetDialog parent, String id) {
         super(parent, "Sell Pet", true);
         this.setSize(600,300);
         this.setContentPane(mainPanel);

@@ -14,6 +14,7 @@ import static java.lang.Integer.parseInt;
 
 public class ViewPetDialog extends JDialog {
 
+    CheckPetDialog parent;
     private JPanel mainPanel;
     private JLabel nameLabel;
     private JTextField nameTextField;
@@ -34,6 +35,7 @@ public class ViewPetDialog extends JDialog {
         this.setSize(300,500);
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
+        this.parent = parent;
 
         //load initial data
         Pets p = new Pets(id);
@@ -162,6 +164,7 @@ public class ViewPetDialog extends JDialog {
         }
         return idx;
     }
+
 
     public void refreshBreedComboBox(String [] breeds) {
         breedComboBoxModel.removeAllElements();

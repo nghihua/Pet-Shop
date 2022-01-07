@@ -38,6 +38,7 @@ public class CheckPetDialog extends JDialog {
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
+
         //pet list
         listPetModel = new DefaultListModel();
         listPet.setModel(listPetModel);

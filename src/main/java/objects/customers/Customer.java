@@ -5,7 +5,7 @@ import database.PostgreSQLJDBC;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Customer {
+public class Customer implements CustomerInterface {
     
     private String name;
     private String phone;

@@ -5,7 +5,7 @@ import database.PostgreSQLJDBC;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Supply {
+public class Supply implements SupplyInterface {
     private String id;
     private String name;
     private double price;
