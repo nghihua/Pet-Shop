@@ -26,6 +26,66 @@ public class CheckCustomerDialog extends JDialog {
     private DefaultListModel listCustomerModel;
 
 
+    CheckCustomerDialog(JFrame parent) {
+        super(parent, "Check Current Customers", true);
+        this.setSize(600,400);
+        this.setContentPane(mainPanel);
+        this.setLocationRelativeTo(null);
+
+        //list
+        listCustomerModel = new DefaultListModel();
+        listCustomer.setModel(listCustomerModel);
+        //load customer id
+        refreshCustomerList(loadAllCustomer());
+
+        //action listeners
+        viewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int customerIndex = listCustomer.getSelectedIndex();
+                //if no customer is selected
+                if (customerIndex == -1) {
+                    JOptionPane.showMessageDialog(null, "You haven't selected a customer!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    String val = listCustomer.getSelectedValue().toString();
+                    new ViewCustomerDialog(CheckCustomerDialog.this, (val));
+                }
+            }
+        });
+
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                //retrieve data from database, replace current data
+                //search by name or by phone
+                String phone = phoneTextField.getText();
+                String name = nameTextField.getText();
+                if(Objects.equals(phone, "") && Objects.equals(name, "")) {
+                    refreshCustomerList(loadAllCustomer());
+                }
+                else if(Objects.equals(name, "")) {
+                    refreshCustomerList(loadCustomerByPhone((phone)));
+                }
+                else if(Objects.equals(phone, "")) {
+                    refreshCustomerList(loadCustomerByName(name));
+                }
+                else {
+                    refreshCustomerList(loadCustomerByPhoneAndName((phone), name));
+                }
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshCustomerList(loadAllCustomer());
+            }
+        });
+        this.setVisible(true);
+    }
+
     String[] loadAllCustomer()
     {
         String sql = "SELECT phone FROM customer;";
@@ -50,7 +110,7 @@ public class CheckCustomerDialog extends JDialog {
 
     String[] loadCustomerByPhone(String phone)
     {
-        String sql = String.format("SELECT phone FROM customer WHERE phone = '%s';", phone);
+        String sql = String.format("SELECT phone FROM customer WHERE phone ~* '%s';", phone);
         int no_of_cust = PostgreSQLJDBC.countResult(sql);
         String[] customers = new String[no_of_cust];
         try{
@@ -113,74 +173,6 @@ public class CheckCustomerDialog extends JDialog {
         }
         return customers;
 
-    }
-
-    CheckCustomerDialog(JFrame parent) {
-        super(parent, "Check Current Customers", true);
-        this.setSize(600,400);
-        this.setContentPane(mainPanel);
-        this.setLocationRelativeTo(null);
-
-        //list
-        listCustomerModel = new DefaultListModel();
-        listCustomer.setModel(listCustomerModel);
-        //load initial data
-        //load customer id
-        //refreshCustomerList(new String[]{"Toodle-Tuh", "Doggo", "Noob", "Tagalog"});
-        refreshCustomerList(loadAllCustomer());
-
-        //action listeners
-        viewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                int customerIndex = listCustomer.getSelectedIndex();
-                //if no customer is selected
-                if (customerIndex == -1) {
-                    JOptionPane.showMessageDialog(null, "You haven't selected a customer!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-                else {
-                    String val = listCustomer.getSelectedValue().toString();
-                    new ViewCustomerDialog(CheckCustomerDialog.this, (val));
-                }
-            }
-        });
-
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                //retrieve data from database, replace current data
-                //search by name or by phone
-                String phone = phoneTextField.getText();
-                String name = nameTextField.getText();
-                if(Objects.equals(phone, "") && Objects.equals(name, ""))
-                {
-
-                    refreshCustomerList(loadAllCustomer());
-                }
-                else if(Objects.equals(name, ""))
-                {
-                    refreshCustomerList(loadCustomerByPhone((phone)));
-                }
-                else if(Objects.equals(phone, ""))
-                {
-                    refreshCustomerList(loadCustomerByName(name));
-                }
-                else{
-                    refreshCustomerList(loadCustomerByPhoneAndName((phone), name));
-                }
-                //fetch data from database and call refreshCustomerList here
-                //refreshCustomerList(fetchDataBasedOnConditions(phone, name));
-            }
-        });
-
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshCustomerList(loadAllCustomer());
-            }
-        });
-        this.setVisible(true);
     }
 
     public void refreshCustomerList(String [] customers) {
