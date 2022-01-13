@@ -12,8 +12,7 @@ public class Customer implements CustomerInterface {
     private double discount; //discount = -1 means guest
     
     public Customer(String name, String phone, double discount) throws Exception {
-        if(discount > 1.0)
-        {
+        if(discount > 1.0) {
             throw new Exception();
         }
         this.name = name;

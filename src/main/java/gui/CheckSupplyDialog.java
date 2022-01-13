@@ -3,6 +3,9 @@ package gui;
 import database.PostgreSQLJDBC;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -12,16 +15,15 @@ public class CheckSupplyDialog extends JDialog {
 
     private JPanel mainPanel;
     private JButton viewButton;
-    private JList listSupply;
     private JLabel minPriceLabel;
     private JLabel maxPriceLabel;
     private JSpinner minPriceSpinner;
     private JSpinner maxPriceSpinner;
     private JButton searchButton;
     private JButton resetButton;
+    private JTable tableSupply;
 
-    private DefaultListModel listSupplyModel;
-
+    private DefaultTableModel tableSupplyModel;
 
     CheckSupplyDialog(JFrame parent) {
         super(parent, "Check Current Supplies", true);
@@ -29,24 +31,33 @@ public class CheckSupplyDialog extends JDialog {
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
-        //list
-        listSupplyModel = new DefaultListModel();
-        listSupply.setModel(listSupplyModel);
-        //load intial data
-        refreshSupplyList(loadAllSupplyId());
+        //table
+        tableSupplyModel = new DefaultTableModel(new String[]{"ID", "Supply Name"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+//            @Override
+//            public Class<?> getColumnClass(int columnIndex) {
+//                return columnClass[columnIndex];
+//            }
+        };
+        tableSupply.setModel(tableSupplyModel);
+        tableSupply.setRowHeight(tableSupply.getRowHeight()+10);
+        loadTableDataAll();
 
         //action listeners
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                int supplyIndex = listSupply.getSelectedIndex();
-                //if no pet is selected
-                if (supplyIndex == -1) {
+                int selectedRow = tableSupply.getSelectedRow();
+                if (selectedRow == -1) {
                     JOptionPane.showMessageDialog(null, "You haven't selected a supply!", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-                    new ViewSupplyDialog(CheckSupplyDialog.this, listSupply.getSelectedValue().toString());
+                    Object selectedId = tableSupply.getValueAt(selectedRow, 0);
+                    new ViewSupplyDialog(CheckSupplyDialog.this, selectedId.toString());
                 }
             }
         });
@@ -63,7 +74,7 @@ public class CheckSupplyDialog extends JDialog {
                             JOptionPane.ERROR_MESSAGE);
                 }
                 //refresh supply list with new data based on conditions
-                refreshSupplyList(loadSearchedSupplies(minPrice, maxPrice));
+                loadTableDataSearched(minPrice, maxPrice);
             }
         });
 
@@ -77,60 +88,45 @@ public class CheckSupplyDialog extends JDialog {
         this.setVisible(true);
     }
 
-    //refresh list
-    public void refreshSupplyList(String [] supplies) {
-        listSupplyModel.removeAllElements();
-        for (String p : supplies) {
-            listSupplyModel.addElement(p);
-        }
-    }
-
     public void resetDisplay() {
-        refreshSupplyList(loadAllSupplyId());
+        loadTableDataAll();
         minPriceSpinner.setValue(0);
         maxPriceSpinner.setValue(0);
     }
 
     //methods for interacting with database
-    public String[] loadAllSupplyId()
-    {
-        String query = "SELECT supply_id FROM supply WHERE supply_id NOT IN (SELECT item_id FROM supply_transaction);";
+    public void loadTableDataAll() {
+        String query = "SELECT supply_id, supply_name FROM supply WHERE supply_id NOT IN (SELECT item_id FROM supply_transaction);";
         int no_of_supply = PostgreSQLJDBC.countResult(query);
-        String[] id_list = new String[no_of_supply];
-        int idx = 0;
         try {
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             while(rs.next()) {
-                id_list[idx] = rs.getString("supply_id");
-                idx ++;
+                String a = rs.getString("supply_id");
+                String b = rs.getString("supply_name");
+                tableSupplyModel.addRow(new Object[]{a, b});
             }
             PostgreSQLJDBC.closeStatement();
         }
         catch(SQLException e) {
             e.printStackTrace();
         }
-        return id_list;
     }
 
-    String[] loadSearchedSupplies(int min_price, int max_price) {
-        String query = String.format("SELECT supply_id FROM supply WHERE '%d' < price_in * 1.1 AND price_in * 1.1 < '%d';", min_price, max_price);
-        int no_of_supplies = PostgreSQLJDBC.countResult(query);
-        String[] supply_ids = new String[no_of_supplies];
+    void loadTableDataSearched(int min_price, int max_price) {
+        String query = String.format("SELECT supply_id, supply_name FROM supply WHERE '%d' < price_in * 1.1 AND price_in * 1.1 < '%d';", min_price, max_price);
         try{
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             int idx = 0;
-            while(rs.next())
-            {
-                supply_ids[idx] = rs.getString("supply_id");
-                idx++;
+            while(rs.next()) {
+                String a = rs.getString("supply_id");
+                String b = rs.getString("supply_name");
+                tableSupplyModel.addRow(new Object[]{a, b});
             }
             PostgreSQLJDBC.closeStatement();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             e.printStackTrace();
         }
-        return supply_ids;
     }
 
 }

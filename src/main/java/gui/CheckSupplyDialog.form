@@ -44,16 +44,19 @@
             <properties/>
             <border type="none"/>
             <children>
-              <scrollpane id="4ad3">
+              <scrollpane id="4ddec">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="69b48" class="javax.swing.JList" binding="listSupply">
+                  <component id="c3ca4" class="javax.swing.JTable" binding="tableSupply">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <fillsViewportHeight value="false"/>
+                      <intercellSpacing width="1" height="1"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
