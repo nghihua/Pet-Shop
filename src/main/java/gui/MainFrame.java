@@ -1,7 +1,6 @@
 package gui;
 
 import database.PostgreSQLJDBC;
-import objects.customers.Customer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     //constructor to set properties of frame
     MainFrame() {
-        setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,24));
+        setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,20));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,500);
