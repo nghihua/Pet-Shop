@@ -48,12 +48,6 @@ public class CheckSupplyDialog extends JDialog {
         supplyTable.setRowHeight(supplyTable.getRowHeight()+10);
         loadTableDataAll();
 
-        //disable search options
-        minPriceSpinner.setEnabled(false);
-        maxPriceSpinner.setEnabled(false);
-        minPriceLabel.setEnabled(false);
-        maxPriceLabel.setEnabled(false);
-
         //listeners
         viewButton.addActionListener(new ActionListener() {
             @Override
