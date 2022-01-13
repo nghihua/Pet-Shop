@@ -22,6 +22,9 @@ public class MainFrame extends JFrame implements ActionListener {
     private JMenuItem newCustomer;
     private JMenuItem checkCustomer;
 
+    private JMenu transactionMenu;
+    private JMenuItem checkTransaction;
+
 
 
     public static void main(String[] args) {
@@ -31,7 +34,12 @@ public class MainFrame extends JFrame implements ActionListener {
     //constructor to set properties of frame
     MainFrame() {
         setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,20));
-
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,500);
         this.setTitle("Pet Shop");
@@ -92,11 +100,15 @@ public class MainFrame extends JFrame implements ActionListener {
         customerMenu.add(newCustomer);
         customerMenu.add(checkCustomer);
 
-
+        transactionMenu = new JMenu("Transaction");
+        checkTransaction = new JMenuItem("Check Transactions");
+        checkTransaction.addActionListener(this);
+        transactionMenu.add(checkTransaction);
 
         menuBar.add(petMenu);
         menuBar.add(supplyMenu);
         menuBar.add(customerMenu);
+        menuBar.add(transactionMenu);
 
     }
 
@@ -131,6 +143,9 @@ public class MainFrame extends JFrame implements ActionListener {
         }
         if (e.getSource() == checkCustomer) {
             JDialog checkCustomerDialog = new CheckCustomerDialog(this);
+        }
+        if (e.getSource() == checkTransaction) {
+            JDialog checkTransactionDialog = new CheckTransactionDialog(this);
         }
     }
 

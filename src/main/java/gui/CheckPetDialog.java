@@ -253,18 +253,18 @@ public class CheckPetDialog extends JDialog {
         if (minPriceCheckBox.isSelected()) {
             query_conditions.add(String.format("'%d' < price_in * 1.1", min_price));
         }
-        if (maxAgeCheckBox.isSelected()) {
+        if (maxPriceCheckBox.isSelected()) {
             query_conditions.add(String.format("price_in * 1.1 < '%d'", max_price));
         }
 
-        String sql = "SELECT pet_id, pet_name FROM pet JOIN species ON pet.breed = species.breed WHERE pet_id NOT IN (SELECT item_id FROM transaction) ";
+        String query = "SELECT pet_id, pet_name FROM pet JOIN species ON pet.breed = species.breed WHERE pet_id NOT IN (SELECT item_id FROM transaction) ";
 
         for (String condition : query_conditions) {
-            sql+= "AND " + condition;
+            query+= "AND " + condition;
         }
 
         try{
-            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             while(rs.next()) {
                 String a = rs.getString("pet_id");
                 String b = rs.getString("pet_name");
