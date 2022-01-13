@@ -59,11 +59,11 @@ public class SellSupplyDialog extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 //get values from components
                 String customer = customerComboBox.getSelectedItem().toString();
-                int phone_no = Integer.parseInt(customerComboBox.getSelectedItem().toString());
+                String phone_no = (customerComboBox.getSelectedItem().toString());
                 double price_val = Double.parseDouble(priceValueLabel.getText());
                 //insert transaction to database
-                String sql = String.format("INSERT INTO transaction(item_id, customer_phone, cash_in) " +
-                        "VALUES('%s','%d','%f');", id,phone_no,price_val);
+                String sql = String.format("INSERT INTO supply_transaction(item_id, customer_phone, cash_in) " +
+                        "VALUES('%s','%s',%f);", id,phone_no,price_val);
                 PostgreSQLJDBC.updateToDatabase(sql);
 
                 //catch error and if no error, please do this
@@ -87,7 +87,7 @@ public class SellSupplyDialog extends JDialog {
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             int idx = 0;
             while(rs.next()) {
-                phones[idx] = Integer.toString(rs.getInt("phone"));
+                phones[idx] = rs.getString("phone");
                 idx ++;
             }
             PostgreSQLJDBC.closeStatement();

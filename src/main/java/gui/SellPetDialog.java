@@ -85,7 +85,7 @@ public class SellPetDialog extends JDialog {
                 String phone_no = customerComboBox.getSelectedItem().toString();
                 double price_val = Double.parseDouble(priceValueLabel.getText());
                 String sql = String.format("INSERT INTO transaction(item_id, customer_phone, cash_in) " +
-                        "VALUES('%s','%s','%f');", id,phone_no,price_val);
+                        "VALUES('%s','%s',%f);", id,phone_no,price_val);
                 PostgreSQLJDBC.updateToDatabase(sql);
                 //catch error and if no error, please do this
                 JOptionPane.showMessageDialog(null, "Sell successfully!", "Congrats",

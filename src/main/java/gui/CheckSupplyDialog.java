@@ -94,7 +94,7 @@ public class CheckSupplyDialog extends JDialog {
     //methods for interacting with database
     public String[] loadAllSupplyId()
     {
-        String query = "SELECT supply_id FROM supply WHERE supply_id NOT IN (SELECT item_id FROM transaction);";
+        String query = "SELECT supply_id FROM supply WHERE supply_id NOT IN (SELECT item_id FROM supply_transaction);";
         int no_of_supply = PostgreSQLJDBC.countResult(query);
         String[] id_list = new String[no_of_supply];
         int idx = 0;

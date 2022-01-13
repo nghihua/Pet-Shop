@@ -23,6 +23,8 @@ public class MainFrame extends JFrame implements ActionListener {
     private JMenuItem newCustomer;
     private JMenuItem checkCustomer;
 
+
+
     public static void main(String[] args) {
         new MainFrame();
     }
@@ -91,9 +93,12 @@ public class MainFrame extends JFrame implements ActionListener {
         customerMenu.add(newCustomer);
         customerMenu.add(checkCustomer);
 
+
+
         menuBar.add(petMenu);
         menuBar.add(supplyMenu);
         menuBar.add(customerMenu);
+
     }
 
     //method for setting the font for the whole GUI
