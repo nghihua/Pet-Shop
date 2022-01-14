@@ -72,7 +72,7 @@ public class CheckCustomerDialog extends JDialog {
                     refreshCustomerList(loadCustomerByName(name));
                 }
                 else {
-                    refreshCustomerList(loadCustomerByPhoneAndName((phone), name));
+                    refreshCustomerList(loadCustomerByPhoneAndName(phone, name));
                 }
             }
         });
@@ -118,7 +118,7 @@ public class CheckCustomerDialog extends JDialog {
             int idx = 0;
             while(rs.next())
             {
-                customers[idx] = Integer.toString(rs.getInt("phone"));
+                customers[idx] = rs.getString("phone");
                 idx++;
             }
             PostgreSQLJDBC.closeStatement();
