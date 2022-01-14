@@ -31,7 +31,7 @@ public class CheckTransactionDialog extends JDialog {
         };
         transactionTable.setModel(transactionTableModel);
         transactionTable.setRowHeight(transactionTable.getRowHeight()+10);
-        //loadTableDataAll();
+        loadTableDataAll();
 
         this.setVisible(true);
     }
@@ -42,16 +42,59 @@ public class CheckTransactionDialog extends JDialog {
         transactionTableModel.getDataVector().removeAllElements();
 
         //query from database and add each row to table model here
-        String query = "put query here";
+        String query = "SELECT * FROM pet p;";
+        String query1 = "SELECT * FROM supply p;";
+        String query2 = "SELECT * FROM transaction p;";
+        String query3 = "SELECT * FROM supply_transaction p;";
+        String query4 = "SELECT balance FROM balance WHERE no_ = (SELECT max(no_) FROM balance)";
+        double total = 0;
         try {
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             while(rs.next()) {
                 //example
-                String a = rs.getString("item");
-                String b = rs.getString("category");
-                String c = rs.getString("customer");
-                String d = rs.getString("cashflow");
+                String a = rs.getString("pet_id");
+                String b = "Pet";//rs.getString("Pet");
+                String c = "SELF";//rs.getString("No");
+                String d = "-" + rs.getString("price_in");
                 transactionTableModel.addRow(new Object[]{a, b, c, d});
+                //total -= rs.getDouble("sum");
+            }
+            rs = PostgreSQLJDBC.readFromDatabase(query1);
+            while(rs.next()) {
+                //example
+                String a = rs.getString("supply_id");
+                String b = "Supply";//rs.getString("Pet");
+                String c = "SELF";//rs.getString("No");
+                String d = "-" + rs.getString("price_in");
+                transactionTableModel.addRow(new Object[]{a, b, c, d});
+                //total-= rs.getDouble("sum");
+            }
+            rs = PostgreSQLJDBC.readFromDatabase(query2);
+            while(rs.next()) {
+                //example
+                String a = rs.getString("item_id");
+                String b = "Pet";//rs.getString("Pet");
+                String c = rs.getString("customer_phone");
+                String d = "+" + rs.getString("cash_in");
+                transactionTableModel.addRow(new Object[]{a, b, c, d});
+                //total += rs.getDouble("sum");
+            }
+            rs = PostgreSQLJDBC.readFromDatabase(query3);
+            while(rs.next()) {
+                //example
+                String a = rs.getString("item_id");
+                String b = "Supply";//rs.getString("Pet");
+                String c = rs.getString("customer_phone");
+                String d = "+" + rs.getString("cash_in");
+                transactionTableModel.addRow(new Object[]{a, b, c, d});
+                //total += rs.getDouble("sum");
+            }
+            rs = PostgreSQLJDBC.readFromDatabase(query4);
+            {
+                while(rs.next())
+                {
+                    total += rs.getDouble("balance");
+                }
             }
             PostgreSQLJDBC.closeStatement();
         }
@@ -60,7 +103,7 @@ public class CheckTransactionDialog extends JDialog {
         }
 
         //calculate balance
-        balanceLabel.setText("put value here");
+        balanceLabel.setText(Double.toString(total));
         //if balance is positive, set color to green
         balanceLabel.setForeground(new Color(4, 125, 10));
         //if balance is negative, set color to red

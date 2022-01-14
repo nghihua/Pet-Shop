@@ -34,12 +34,12 @@ public class MainFrame extends JFrame implements ActionListener {
     //constructor to set properties of frame
     MainFrame() {
         setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,20));
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        //try {
+        //    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        //}
+        //catch (Exception e) {
+        //    e.printStackTrace();
+        //}
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800,500);
         this.setTitle("Pet Shop");

@@ -148,23 +148,25 @@ public class CheckSupplyDialog extends JDialog {
         String query_conditions =
                 (minPriceCheckBox.isSelected())?
                         ((maxPriceCheckBox.isSelected())?
-                                String.format("WHERE '%d' < price_in * 1.1 AND price_in * 1.1 < '%d';", min_price, max_price)
-                                : String.format("WHERE '%d' < price_in * 1.1;", min_price))
+                                String.format("AND %d < price_in * 1.1 AND price_in * 1.1 < %d;", min_price, max_price)
+                                : String.format("AND %d < price_in * 1.1;", min_price))
                         : (maxPriceCheckBox.isSelected())?
-                            String.format("WHERE price_in * 1.1 < '%d';", max_price)
+                            String.format("WHERE price_in * 1.1 < %d;", max_price)
                             : ";";
 
-        String query = "SELECT supply_id, supply_name FROM supply " + query_conditions;
+        String query = "SELECT supply_id, supply_name FROM supply WHERE supply_id NOT IN (SELECT item_id FROM supply_transaction)  " + query_conditions;
 
         try{
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             int idx = 0;
+            if (rs != null){
             while(rs.next()) {
                 String a = rs.getString("supply_id");
                 String b = rs.getString("supply_name");
                 supplyTableModel.addRow(new Object[]{a, b});
             }
             PostgreSQLJDBC.closeStatement();
+            }
         }
         catch(SQLException e) {
             e.printStackTrace();
