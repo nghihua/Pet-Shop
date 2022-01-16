@@ -159,18 +159,21 @@ public class CheckSupplyDialog extends JDialog {
         try{
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             int idx = 0;
-            if (rs != null){
-            while(rs.next()) {
-                String a = rs.getString("supply_id");
-                String b = rs.getString("supply_name");
-                supplyTableModel.addRow(new Object[]{a, b});
+            if (rs == null)
+            {
+                //do nothing;
+            }
+            else {
+                while (rs.next()) {
+                    String a = rs.getString("supply_id");
+                    String b = rs.getString("supply_name");
+                    supplyTableModel.addRow(new Object[]{a, b});
+                }
             }
             PostgreSQLJDBC.closeStatement();
-            }
         }
         catch(SQLException e) {
             e.printStackTrace();
         }
     }
-
 }
