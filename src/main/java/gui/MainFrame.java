@@ -3,9 +3,36 @@ package gui;
 import database.PostgreSQLJDBC;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.ImageObserver;
+import java.util.*;
+import javax.swing.Timer;
 
+
+class MyCanvas extends Canvas {
+    String[] imgs = {"./img/pet1.png", "./img/pet2.png", "./img/pet3.png","./img/pet4.png" };
+    Image i;
+    Random r = new Random();
+    public void paint(Graphics g) {
+        Toolkit t = Toolkit.getDefaultToolkit();
+        i = t.getImage(imgs[r.nextInt(0,4)]);
+        g.drawImage(i, 0, 0, this);
+    }
+    MyCanvas(){
+        this.setSize(800,400);
+        Timer tm = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                repaint();
+            }
+        });
+        tm.setRepeats(true);
+        tm.start();
+        //repaint();
+    }
+}
 public class MainFrame extends JFrame implements ActionListener {
 
     private JMenuBar menuBar;
@@ -25,7 +52,13 @@ public class MainFrame extends JFrame implements ActionListener {
     private JMenu transactionMenu;
     private JMenuItem checkTransaction;
 
-
+    /*
+    public void paint(Graphics g) {
+        Toolkit t = Toolkit.getDefaultToolkit();
+        Image i = t.getImage("./img/sample1.png");
+        g.drawImage(i, 120, 120, this);
+    }
+    */
 
     public static void main(String[] args) {
         new MainFrame();
@@ -34,17 +67,18 @@ public class MainFrame extends JFrame implements ActionListener {
     //constructor to set properties of frame
     MainFrame() {
         setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,20));
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        //try {
+         //   UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        //}
+        //catch (Exception e) {
+        //    e.printStackTrace();
+        //}
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800,500);
+        this.setSize(800,600);
         this.setTitle("Pet Shop");
         this.setLayout(new FlowLayout());
-
+        //this.getContentPane().add(BorderLayout.CENTER,new MyCanvas());
+        this.add(new MyCanvas());
         //Connect to database
         PostgreSQLJDBC.connectDatabase();
 
@@ -58,14 +92,13 @@ public class MainFrame extends JFrame implements ActionListener {
             }
         };
         this.addWindowListener(exit_on_close);
-
         initMenu();
         this.setJMenuBar(menuBar);
         menuBar.setPreferredSize(new Dimension(100,60));
 
-        JLabel label = new JLabel();
+        JLabel label = new JLabel("Pet Shop Management Application");
         ImageIcon image = new ImageIcon();
-
+        this.getContentPane().add(BorderLayout.SOUTH, label);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         //pack();
