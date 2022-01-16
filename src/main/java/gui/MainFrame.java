@@ -12,13 +12,14 @@ import javax.swing.Timer;
 
 
 class MyCanvas extends Canvas {
-    String[] imgs = {"./img/pet1.png", "./img/pet2.png", "./img/pet3.png","./img/pet4.png" };
+    String[] imgs = {"./img/pet1.png", "./img/pet2.png", "./img/pet3.png","./img/pet4.png","./img/pet5.png" };
     Image i;
     Random r = new Random();
     public void paint(Graphics g) {
         Toolkit t = Toolkit.getDefaultToolkit();
-        i = t.getImage(imgs[r.nextInt(0,4)]);
+        i = t.getImage(imgs[r.nextInt(0,5)]);
         g.drawImage(i, 0, 0, this);
+        //g.drawString("PET SHOP MANAGEMENT APP", 320, 300);
     }
     MyCanvas(){
         this.setSize(800,400);
@@ -77,8 +78,8 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setSize(800,600);
         this.setTitle("Pet Shop");
         this.setLayout(new FlowLayout());
-        //this.getContentPane().add(BorderLayout.CENTER,new MyCanvas());
-        this.add(new MyCanvas());
+
+        //this.add(new MyCanvas());
         //Connect to database
         PostgreSQLJDBC.connectDatabase();
 
@@ -98,9 +99,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
         JLabel label = new JLabel("Pet Shop Management Application");
         ImageIcon image = new ImageIcon();
-        this.getContentPane().add(BorderLayout.SOUTH, label);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        this.getContentPane().add(BorderLayout.CENTER,new MyCanvas());
+        this.getContentPane().add(BorderLayout.CENTER, label);
         //pack();
     }
 
