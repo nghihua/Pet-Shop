@@ -68,7 +68,7 @@ public class MainFrame extends JFrame implements ActionListener {
         BufferedImage img = null;
 
         try {
-            img = ImageIO.read(new File("./img/banner.png"));
+            img = ImageIO.read(new File("./src/main/resources/banner.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
