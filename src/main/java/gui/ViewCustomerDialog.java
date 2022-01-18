@@ -43,12 +43,24 @@ public class ViewCustomerDialog extends JDialog {
                 String new_phone = phoneTextField.getText();//new phone
                 double discount = (Objects.equals(discountTextField.getText(), "") ? -1 :Double.parseDouble(discountTextField.getText()));
 
-                c.updateInfo(name, new_phone, discount);
-                //System.out.println("Update: " + name + " " + phone + " " + discount);
-
-                //catch error and if no error, please do this
-                JOptionPane.showMessageDialog(null, "Update successfully!", "Congrats",
-                        JOptionPane.PLAIN_MESSAGE);
+                if (discount > 0.305) {
+                    JOptionPane.showMessageDialog(null, "Discount cannot be larger than 30%", "Invalid Discount",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    try {
+                        Customer c = new Customer(name, phone, discount);
+                        c.setInfo();
+                        //System.out.println("Insert supply: " + name + " " + phone + " " + discount);
+                        JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
+                                JOptionPane.PLAIN_MESSAGE);
+                        //catch error and if no error, please do this
+                    }
+                    catch(Exception e) {
+                        JOptionPane.showMessageDialog(null, "Insert failed!", "Request failed",
+                                JOptionPane.PLAIN_MESSAGE);
+                    }
+                }
             }
         });
 

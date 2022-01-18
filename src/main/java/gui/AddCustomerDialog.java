@@ -30,19 +30,25 @@ public class AddCustomerDialog extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 String name = nameTextField.getText();
                 String phone = phoneTextField.getText();
-                float discount = (Objects.equals(discountTextField.getText(), "")) ? -1 : Float.parseFloat(discountTextField.getText());
+                double discount = (Objects.equals(discountTextField.getText(), "")) ? -1 : Float.parseFloat(discountTextField.getText());
 
-                try {
-                    Customer c = new Customer(name, phone, discount);
-                    c.setInfo();
-                    //System.out.println("Insert supply: " + name + " " + phone + " " + discount);
-                    JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
-                            JOptionPane.PLAIN_MESSAGE);
-                    //catch error and if no error, please do this
+                if (discount > 0.305) {
+                    JOptionPane.showMessageDialog(null, "Discount cannot be larger than 30%", "Invalid Discount",
+                            JOptionPane.ERROR_MESSAGE);
                 }
-                catch(Exception e) {
-                    JOptionPane.showMessageDialog(null, "Insert failed!", "Request failed",
-                            JOptionPane.PLAIN_MESSAGE);
+                else {
+                    try {
+                        Customer c = new Customer(name, phone, discount);
+                        c.setInfo();
+                        //System.out.println("Insert supply: " + name + " " + phone + " " + discount);
+                        JOptionPane.showMessageDialog(null, "Insert successfully!", "Congrats",
+                                JOptionPane.PLAIN_MESSAGE);
+                        //catch error and if no error, please do this
+                    }
+                    catch(Exception e) {
+                        JOptionPane.showMessageDialog(null, "Insert failed!", "Request failed",
+                                JOptionPane.PLAIN_MESSAGE);
+                    }
                 }
             }
         });
