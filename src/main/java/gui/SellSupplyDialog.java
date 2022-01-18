@@ -71,6 +71,7 @@ public class SellSupplyDialog extends JDialog {
                         JOptionPane.PLAIN_MESSAGE);
 
                 //close sell pet and view pet dialogs after sold
+                parent.parent.resetDisplay();
                 SellSupplyDialog.this.dispose();
                 parent.dispose();
             }

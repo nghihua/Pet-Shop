@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 public class ViewSupplyDialog extends JDialog {
 
+    CheckSupplyDialog parent;
     private JPanel mainPanel;
     private JLabel nameLabel;
     private JTextField nameTextField;

@@ -2,38 +2,18 @@ package gui;
 
 import database.PostgreSQLJDBC;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.Timer;
 
-
-class MyCanvas extends Canvas {
-    String[] imgs = {"./img/pet1.png", "./img/pet2.png", "./img/pet3.png","./img/pet4.png","./img/pet5.png" };
-    Image i;
-    Random r = new Random();
-    public void paint(Graphics g) {
-        Toolkit t = Toolkit.getDefaultToolkit();
-        i = t.getImage(imgs[r.nextInt(0,5)]);
-        g.drawImage(i, 0, 0, this);
-        //g.drawString("PET SHOP MANAGEMENT APP", 320, 300);
-    }
-    MyCanvas(){
-        this.setSize(800,400);
-        Timer tm = new Timer(5000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                repaint();
-            }
-        });
-        tm.setRepeats(true);
-        tm.start();
-        //repaint();
-    }
-}
 public class MainFrame extends JFrame implements ActionListener {
 
     private JMenuBar menuBar;
@@ -53,14 +33,6 @@ public class MainFrame extends JFrame implements ActionListener {
     private JMenu transactionMenu;
     private JMenuItem checkTransaction;
 
-    /*
-    public void paint(Graphics g) {
-        Toolkit t = Toolkit.getDefaultToolkit();
-        Image i = t.getImage("./img/sample1.png");
-        g.drawImage(i, 120, 120, this);
-    }
-    */
-
     public static void main(String[] args) {
         new MainFrame();
     }
@@ -75,7 +47,7 @@ public class MainFrame extends JFrame implements ActionListener {
         //    e.printStackTrace();
         //}
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800,600);
+        this.setPreferredSize(new Dimension(800,600));
         this.setTitle("Pet Shop");
         this.setLayout(new FlowLayout());
 
@@ -83,28 +55,49 @@ public class MainFrame extends JFrame implements ActionListener {
         PostgreSQLJDBC.connectDatabase();
 
         //Disconnect database when the main frame is closed
-        WindowAdapter exit_on_close = new WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
                 PostgreSQLJDBC.disconnectDatabase();
                 System.exit(0);
             }
-        };
-        this.addWindowListener(exit_on_close);
+        });
+
+        //Setup Menubar
         initMenu();
         this.setJMenuBar(menuBar);
         menuBar.setPreferredSize(new Dimension(100,60));
 
-        //canvas
-        JLabel label = new JLabel("Pet Shop Management Application");
-        ImageIcon image = new ImageIcon();
-        this.getContentPane().add(BorderLayout.CENTER, new MyCanvas());
-        this.getContentPane().add(BorderLayout.CENTER, label);
+        //Setup banner image
+        JLabel imageLabel = new JLabel();
+        this.getContentPane().add(BorderLayout.CENTER, imageLabel);
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("./img/banner.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        //pack();
+        Image dimg = img.getScaledInstance(this.getWidth(), (int) (this.getHeight() - 0.25*this.getHeight()),
+                Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(dimg);
+        imageLabel.setIcon(imageIcon);
+
+        BufferedImage finalImg = img;
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                Image dimg = finalImg.getScaledInstance(MainFrame.this.getWidth(), (int) (MainFrame.this.getHeight() - 0.25*MainFrame.this.getHeight()),
+                        Image.SCALE_SMOOTH);
+                ImageIcon imageIcon = new ImageIcon(dimg);
+                imageLabel.setIcon(imageIcon);
+            }
+        });
     }
 
     //initialize menu bar

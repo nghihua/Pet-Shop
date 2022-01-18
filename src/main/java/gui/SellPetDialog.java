@@ -24,27 +24,6 @@ public class SellPetDialog extends JDialog {
     private JLabel priceValueLabel;
     private DefaultComboBoxModel customerComboBoxModel;
 
-    String[] loadCustomerPhone()
-    {
-        String sql = "SELECT phone FROM customer;";
-        int no_of_customer = PostgreSQLJDBC.countResult(sql);
-        String[] phones = new String[no_of_customer];
-        try{
-            ResultSet rs = PostgreSQLJDBC.readFromDatabase(sql);
-            int idx = 0;
-            while(rs.next())
-            {
-                phones[idx] = (rs.getString("phone"));
-                idx ++;
-            }
-            PostgreSQLJDBC.closeStatement();
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return phones;
-    }
     SellPetDialog(ViewPetDialog parent, String id) {
         super(parent, "Sell Pet", true);
         this.setSize(600,300);
@@ -93,6 +72,7 @@ public class SellPetDialog extends JDialog {
 
                 //close sell pet and view pet dialogs after sold
                 SellPetDialog.this.dispose();
+                parent.parent.resetDisplay();
                 parent.dispose();
             }
         });
@@ -107,4 +87,22 @@ public class SellPetDialog extends JDialog {
         }
     }
 
+    String[] loadCustomerPhone() {
+        String query = "SELECT phone FROM customer;";
+        int no_of_customer = PostgreSQLJDBC.countResult(query);
+        String[] phones = new String[no_of_customer];
+        try {
+            ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
+            int idx = 0;
+            while(rs.next()) {
+                phones[idx] = (rs.getString("phone"));
+                idx ++;
+            }
+            PostgreSQLJDBC.closeStatement();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return phones;
+    }
 }

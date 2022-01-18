@@ -88,10 +88,8 @@ public class CheckTransactionDialog extends JDialog {
                 transactionTableModel.addRow(new Object[]{a, b, c, d});
                 //total += rs.getDouble("sum");
             }
-            rs = PostgreSQLJDBC.readFromDatabase(query4);
-            {
-                while(rs.next())
-                {
+            rs = PostgreSQLJDBC.readFromDatabase(query4);{
+                while(rs.next()) {
                     total += rs.getDouble("balance");
                 }
             }
