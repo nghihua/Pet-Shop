@@ -43,9 +43,12 @@ public class CheckPetDialog extends JDialog {
 
     private DefaultTableModel petTableModel;
 
+    private SpinnerNumberModel minPriceSpinnerModel;
+    private SpinnerNumberModel maxPriceSpinnerModel;
+
     CheckPetDialog(JFrame parent) {
         super(parent, "Check Current Pets", true);
-        this.setSize((int) (0.8 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
+        this.setSize((int) (0.85 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
@@ -74,6 +77,12 @@ public class CheckPetDialog extends JDialog {
         speciesComboBox.addActionListener(action ->
                 refreshBreedComboBox(loadAllBreeds(speciesComboBox.getSelectedItem().toString()))
         );
+
+        //set up minprice maxprice spinner
+        minPriceSpinnerModel = new SpinnerNumberModel(0, 0, 1000000000, 1000);
+        maxPriceSpinnerModel = new SpinnerNumberModel(0, 0, 1000000000, 1000);
+        minPriceSpinner.setModel(minPriceSpinnerModel);
+        maxPriceSpinner.setModel(maxPriceSpinnerModel);
 
         //listeners
         viewButton.addActionListener(new ActionListener() {

@@ -27,13 +27,16 @@ public class CheckSupplyDialog extends JDialog {
 
     private DefaultTableModel supplyTableModel;
 
+    private SpinnerNumberModel minPriceSpinnerModel;
+    private SpinnerNumberModel maxPriceSpinnerModel;
+
     CheckSupplyDialog(JFrame parent) {
         super(parent, "Check Current Supplies", true);
         this.setSize((int) (0.8 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
-        //table
+        //set up table
         supplyTableModel = new DefaultTableModel(new String[]{"ID", "Supply Name"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -47,6 +50,12 @@ public class CheckSupplyDialog extends JDialog {
         supplyTable.setModel(supplyTableModel);
         supplyTable.setRowHeight(supplyTable.getRowHeight()+10);
         loadTableDataAll();
+
+        //set up minprice maxprice spinner
+        minPriceSpinnerModel = new SpinnerNumberModel(0, 0, 1000000000, 1000);
+        maxPriceSpinnerModel = new SpinnerNumberModel(0, 0, 1000000000, 1000);
+        minPriceSpinner.setModel(minPriceSpinnerModel);
+        maxPriceSpinner.setModel(maxPriceSpinnerModel);
 
         //listeners
         viewButton.addActionListener(new ActionListener() {
