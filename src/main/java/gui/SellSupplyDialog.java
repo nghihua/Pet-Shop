@@ -16,9 +16,10 @@ public class SellSupplyDialog extends JDialog {
     private JLabel customerLabel;
     private JComboBox customerComboBox;
     private JLabel discountLabel;
-    private JLabel priceLabel;
+    private JLabel discountedPriceLabel;
     private JButton confirmButton;
     private JLabel discountValueLabel;
+    private JLabel discountedPriceValueLabel;
     private JLabel priceValueLabel;
 
     private DefaultComboBoxModel customerComboBoxModel;
@@ -46,11 +47,13 @@ public class SellSupplyDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //get currently selected customer, load the discount value and calculate the price
-                Customer c = new Customer((customerComboBox.getSelectedItem().toString()));
-                double discount_val = Math.max(c.getDiscount(), 0.0);
-                discountValueLabel.setText(Double.toString(discount_val));
-                double cost = supply.getPrice() * 1.1 * (1 - discount_val);
-                priceValueLabel.setText(Double.toString(cost));
+                Customer c = new Customer(customerComboBox.getSelectedItem().toString());
+                double discount = Math.max(c.getDiscount(), 0.0);
+                discountValueLabel.setText(Double.toString(discount));
+                double price = supply.getPrice() * (1 + Double.parseDouble(System.getenv("PRICE_INTEREST")));
+                priceValueLabel.setText(Double.toString(price));
+                double discounted_price = price * (1 - discount);
+                discountedPriceValueLabel.setText(Double.toString(discounted_price));
             }
         });
 
@@ -60,7 +63,7 @@ public class SellSupplyDialog extends JDialog {
                 //get values from components
                 String customer = customerComboBox.getSelectedItem().toString();
                 String phone_no = (customerComboBox.getSelectedItem().toString());
-                double price_val = Double.parseDouble(priceValueLabel.getText());
+                double price_val = Double.parseDouble(discountedPriceValueLabel.getText());
                 //insert transaction to database
                 String sql = String.format("INSERT INTO supply_transaction(item_id, customer_phone, cash_in) " +
                         "VALUES('%s','%s',%f);", id,phone_no,price_val);

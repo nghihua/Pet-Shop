@@ -17,7 +17,7 @@ public class CheckTransactionDialog extends JDialog {
     private DefaultTableModel transactionTableModel;
 
     CheckTransactionDialog(JFrame parent) {
-        super(parent, "Check Current Supplies", true);
+        super(parent, "Check Transactions", true);
         this.setSize((int) (0.8 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);

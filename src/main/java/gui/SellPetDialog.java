@@ -21,6 +21,7 @@ public class SellPetDialog extends JDialog {
     private JLabel priceLabel;
     private JButton confirmButton;
     private JLabel discountValueLabel;
+    private JLabel discountedPriceValueLabel;
     private JLabel priceValueLabel;
     private DefaultComboBoxModel customerComboBoxModel;
 
@@ -31,7 +32,7 @@ public class SellPetDialog extends JDialog {
         this.setLocationRelativeTo(null);
 
         //load pet
-        Pets p = new Pets(id);
+        Pets pet = new Pets(id);
         //Store customer's id
         //combo box
         customerComboBoxModel = new DefaultComboBoxModel();
@@ -48,10 +49,12 @@ public class SellPetDialog extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 //get currently selected customer, load the discount value and calculate the price
                 Customer c = new Customer(customerComboBox.getSelectedItem().toString());
-                double discount_val = Math.max(c.getDiscount(), 0.0);
-                discountValueLabel.setText(Double.toString(discount_val));
-                double cost = p.getPrice_in() * 1.1 * (1 - discount_val);
-                priceValueLabel.setText(Double.toString(cost));
+                double discount = Math.max(c.getDiscount(), 0.0);
+                discountValueLabel.setText(Double.toString(discount));
+                double price = p.getPrice_in() * (1 + Double.parseDouble(System.getenv("PRICE_INTEREST")));
+                priceValueLabel.setText(Double.toString(price));
+                double discounted_price = price * (1 - discount);
+                discountedPriceValueLabel.setText(Double.toString(discounted_price));
             }
         });
 
@@ -62,7 +65,7 @@ public class SellPetDialog extends JDialog {
 
                 //insert into transaction table here
                 String phone_no = customerComboBox.getSelectedItem().toString();
-                double price_val = Double.parseDouble(priceValueLabel.getText());
+                double price_val = Double.parseDouble(discountedPriceValueLabel.getText());
                 String sql = String.format("INSERT INTO transaction(item_id, customer_phone, cash_in) " +
                         "VALUES('%s','%s',%f);", id,phone_no,price_val);
                 PostgreSQLJDBC.updateToDatabase(sql);
