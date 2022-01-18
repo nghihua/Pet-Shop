@@ -28,6 +28,10 @@ public class CheckTransactionDialog extends JDialog {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+            @Override
+            public Class<?> getColumnClass(int c) {
+                return getValueAt(0, c).getClass();
+            }
         };
         transactionTable.setModel(transactionTableModel);
         transactionTable.setRowHeight(transactionTable.getRowHeight()+10);
@@ -51,22 +55,19 @@ public class CheckTransactionDialog extends JDialog {
         try {
             ResultSet rs = PostgreSQLJDBC.readFromDatabase(query);
             while(rs.next()) {
-                //example
                 String a = rs.getString("pet_id");
-                String b = "Pet";//rs.getString("Pet");
-                String c = "N/A";//rs.getString("No");
-                String d = "-" + rs.getString("price_in");
+                String b = "Pet";
+                String c = "N/A";
+                Double d = - rs.getDouble("price_in");
                 transactionTableModel.addRow(new Object[]{a, b, c, d});
             }
             rs = PostgreSQLJDBC.readFromDatabase(query1);
             while(rs.next()) {
-                //example
                 String a = rs.getString("supply_id");
-                String b = "Supply";//rs.getString("Pet");
-                String c = "SELF";//rs.getString("No");
-                String d = "-" + rs.getString("price_in");
+                String b = "Supply";
+                String c = "N/A";
+                Double d = - rs.getDouble("price_in");
                 transactionTableModel.addRow(new Object[]{a, b, c, d});
-                //total-= rs.getDouble("sum");
             }
             rs = PostgreSQLJDBC.readFromDatabase(query2);
             while(rs.next()) {
@@ -74,19 +75,16 @@ public class CheckTransactionDialog extends JDialog {
                 String a = rs.getString("item_id");
                 String b = "Pet";//rs.getString("Pet");
                 String c = rs.getString("customer_phone");
-                String d = "+" + rs.getString("cash_in");
+                Double d = rs.getDouble("cash_in");
                 transactionTableModel.addRow(new Object[]{a, b, c, d});
-                //total += rs.getDouble("sum");
             }
             rs = PostgreSQLJDBC.readFromDatabase(query3);
             while(rs.next()) {
-                //example
                 String a = rs.getString("item_id");
                 String b = "Supply";//rs.getString("Pet");
                 String c = rs.getString("customer_phone");
-                String d = "+" + rs.getString("cash_in");
+                Double d = rs.getDouble("cash_in");
                 transactionTableModel.addRow(new Object[]{a, b, c, d});
-                //total += rs.getDouble("sum");
             }
             rs = PostgreSQLJDBC.readFromDatabase(query4);{
                 while(rs.next()) {
@@ -99,8 +97,8 @@ public class CheckTransactionDialog extends JDialog {
             e.printStackTrace();
         }
 
-        //calculate balance
-        balanceLabel.setText(Double.toString(total));
+        //set balance
+        balanceLabel.setText(String.format("%.2f", total));
         if (total >= 0) {
             //if balance is positive, set color to green
             balanceLabel.setForeground(new Color(4, 125, 10));

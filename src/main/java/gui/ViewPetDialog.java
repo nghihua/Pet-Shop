@@ -41,7 +41,7 @@ public class ViewPetDialog extends JDialog {
         Pets p = new Pets(id);
         this.nameTextField.setText(p.getName());
         this.ageTextField.setText(Integer.toString(p.getAge()));
-        this.priceTextField.setText(Double.toString(p.getPrice_in()));
+        this.priceTextField.setText(String.format("%.2f", p.getPrice_in()));
         //combo box
         breedComboBoxModel = new DefaultComboBoxModel();
         breedComboBox.setModel(breedComboBoxModel);

@@ -27,7 +27,7 @@ public class ViewSupplyDialog extends JDialog {
         //load initial data
         Supply supply = new Supply(id);
         this.nameTextField.setText(supply.getName());
-        this.priceTextField.setText(Double.toString(supply.getPrice()));
+        this.priceTextField.setText(String.format("%.2f", supply.getPrice()));
 
         //handle submit
         submitButton.addActionListener(new ActionListener() {

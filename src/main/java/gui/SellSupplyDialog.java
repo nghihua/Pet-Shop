@@ -49,11 +49,11 @@ public class SellSupplyDialog extends JDialog {
                 //get currently selected customer, load the discount value and calculate the price
                 Customer c = new Customer(customerComboBox.getSelectedItem().toString());
                 double discount = Math.max(c.getDiscount(), 0.0);
-                discountValueLabel.setText(Double.toString(discount));
+                discountValueLabel.setText(String.format("%.2f", discount));
                 double price = supply.getPrice() * (1 + Double.parseDouble(System.getenv("PRICE_INTEREST")));
-                priceValueLabel.setText(Double.toString(price));
+                priceValueLabel.setText(String.format("%.2f", price));
                 double discounted_price = price * (1 - discount);
-                discountedPriceValueLabel.setText(Double.toString(discounted_price));
+                discountedPriceValueLabel.setText(String.format("%.2f", discounted_price));
             }
         });
 

@@ -34,7 +34,7 @@ public class ViewCustomerDialog extends JDialog {
         Customer c = new Customer(phone);
         nameTextField.setText(c.getName());
         phoneTextField.setText(phone);
-        discountTextField.setText((c.getDiscount() >= 0.0 )? Double.toString(c.getDiscount()) : "");
+        discountTextField.setText((c.getDiscount() >= 0.0 )? String.format("%.2f", c.getDiscount()) : "");
         //handle submit
         submitButton.addActionListener(new ActionListener() {
             @Override
