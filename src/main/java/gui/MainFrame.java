@@ -79,7 +79,6 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setTitle("Pet Shop");
         this.setLayout(new FlowLayout());
 
-        //this.add(new MyCanvas());
         //Connect to database
         PostgreSQLJDBC.connectDatabase();
 
@@ -97,12 +96,14 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setJMenuBar(menuBar);
         menuBar.setPreferredSize(new Dimension(100,60));
 
+        //canvas
         JLabel label = new JLabel("Pet Shop Management Application");
         ImageIcon image = new ImageIcon();
+        this.getContentPane().add(BorderLayout.CENTER, new MyCanvas());
+        this.getContentPane().add(BorderLayout.CENTER, label);
+
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.getContentPane().add(BorderLayout.CENTER,new MyCanvas());
-        this.getContentPane().add(BorderLayout.CENTER, label);
         //pack();
     }
 

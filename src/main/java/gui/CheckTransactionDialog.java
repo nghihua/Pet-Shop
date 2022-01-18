@@ -54,10 +54,9 @@ public class CheckTransactionDialog extends JDialog {
                 //example
                 String a = rs.getString("pet_id");
                 String b = "Pet";//rs.getString("Pet");
-                String c = "SELF";//rs.getString("No");
+                String c = "N/A";//rs.getString("No");
                 String d = "-" + rs.getString("price_in");
                 transactionTableModel.addRow(new Object[]{a, b, c, d});
-                //total -= rs.getDouble("sum");
             }
             rs = PostgreSQLJDBC.readFromDatabase(query1);
             while(rs.next()) {
@@ -104,9 +103,13 @@ public class CheckTransactionDialog extends JDialog {
 
         //calculate balance
         balanceLabel.setText(Double.toString(total));
-        //if balance is positive, set color to green
-        balanceLabel.setForeground(new Color(4, 125, 10));
-        //if balance is negative, set color to red
-        balanceLabel.setForeground(Color.RED);
+        if (total >= 0) {
+            //if balance is positive, set color to green
+            balanceLabel.setForeground(new Color(4, 125, 10));
+        }
+        else {
+            //if balance is negative, set color to red
+            balanceLabel.setForeground(Color.RED);
+        }
     }
 }
