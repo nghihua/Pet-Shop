@@ -37,17 +37,10 @@ public class MainFrame extends JFrame implements ActionListener {
         new MainFrame();
     }
 
-    //constructor to set properties of frame
     MainFrame() {
         setUIFont(new javax.swing.plaf.FontUIResource("JetBrains Mono",Font.PLAIN,20));
-        //try {
-         //   UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        //}
-        //catch (Exception e) {
-        //    e.printStackTrace();
-        //}
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setPreferredSize(new Dimension(800,600));
+        this.setPreferredSize(new Dimension(Integer.parseInt(System.getenv("MAIN_FRAME_WIDTH")), Integer.parseInt(System.getenv("MAIN_FRAME_HEIGHT"))));
         this.setTitle("Pet Shop");
         this.setLayout(new FlowLayout());
 
@@ -69,30 +62,34 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setJMenuBar(menuBar);
         menuBar.setPreferredSize(new Dimension(100,60));
 
-        //Setup banner image
+        //Setup Banner Image
         JLabel imageLabel = new JLabel();
         this.getContentPane().add(BorderLayout.CENTER, imageLabel);
         BufferedImage img = null;
+
         try {
             img = ImageIO.read(new File("./img/banner.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        //pack and set visible
         pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        Image dimg = img.getScaledInstance(this.getWidth(), (int) (this.getHeight() - 0.25*this.getHeight()),
+
+
+        //Scale and Display Image based on window size
+        Image dimg = img.getScaledInstance(this.getWidth(), this.getWidth()/2,
                 Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(dimg);
         imageLabel.setIcon(imageIcon);
-
         BufferedImage finalImg = img;
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                Image dimg = finalImg.getScaledInstance(MainFrame.this.getWidth(), (int) (MainFrame.this.getHeight() - 0.25*MainFrame.this.getHeight()),
+                Image dimg = finalImg.getScaledInstance(MainFrame.this.getWidth(), MainFrame.this.getWidth()/2,
                         Image.SCALE_SMOOTH);
                 ImageIcon imageIcon = new ImageIcon(dimg);
                 imageLabel.setIcon(imageIcon);
