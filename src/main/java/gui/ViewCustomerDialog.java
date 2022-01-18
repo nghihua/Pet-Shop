@@ -26,7 +26,7 @@ public class ViewCustomerDialog extends JDialog {
     }
     ViewCustomerDialog(JDialog parent, String phone) {
         super(parent, "View Customer Information", true);
-        this.setSize(300,400);
+        this.setSize((int) (0.4 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 

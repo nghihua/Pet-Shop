@@ -29,7 +29,7 @@ public class CheckSupplyDialog extends JDialog {
 
     CheckSupplyDialog(JFrame parent) {
         super(parent, "Check Current Supplies", true);
-        this.setSize(700,400);
+        this.setSize((int) (0.8 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 

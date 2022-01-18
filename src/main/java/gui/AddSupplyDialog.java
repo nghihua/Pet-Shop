@@ -17,7 +17,7 @@ public class AddSupplyDialog extends JDialog {
 
     AddSupplyDialog(JFrame parent) {
         super(parent, "Add New Supply", true);
-        this.setSize(300,400);
+        this.setSize((int) (0.4 * parent.getWidth()), (int) (0.6 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 

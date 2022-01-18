@@ -20,7 +20,7 @@ public class ViewSupplyDialog extends JDialog {
 
     ViewSupplyDialog(CheckSupplyDialog parent, String id) {
         super(parent, "View Supply Information", true);
-        this.setSize(300,300);
+        this.setSize((int) (0.4 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 

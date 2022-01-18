@@ -30,7 +30,7 @@ public class AddPetDialog extends JDialog {
 
     AddPetDialog(JFrame parent) {
         super(parent, "Add New Pet", true);
-        this.setSize(300,400);
+        this.setSize((int) (0.4 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 

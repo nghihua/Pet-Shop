@@ -32,7 +32,7 @@ public class ViewPetDialog extends JDialog {
 
     ViewPetDialog(CheckPetDialog parent, String id) {
         super(parent, "View Pet Information", true);
-        this.setSize(300,500);
+        this.setSize((int) (0.5 * parent.getWidth()), (parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
         this.parent = parent;

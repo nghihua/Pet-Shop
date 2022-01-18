@@ -26,7 +26,7 @@ public class SellPetDialog extends JDialog {
 
     SellPetDialog(ViewPetDialog parent, String id) {
         super(parent, "Sell Pet", true);
-        this.setSize(600,300);
+        this.setSize((int) (1.5 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 

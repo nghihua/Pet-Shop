@@ -20,7 +20,7 @@ public class AddCustomerDialog extends JDialog {
 
     AddCustomerDialog(JFrame parent) {
         super(parent, "Add New Customer", true);
-        this.setSize(600,400);
+        this.setSize((int) (0.5 * parent.getWidth()), (int) (0.6 * parent.getHeight()));
         this.setContentPane(mainPanel);
         this.setLocationRelativeTo(null);
 
