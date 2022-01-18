@@ -135,11 +135,12 @@ public class AddPetDialog extends JDialog {
             mode = "dog";
             return true;
         }
-        else{
+        else {
             //load Cat's breeds into combo box
             String[] breeds = getBreed("Cat");
             refreshBreedComboBox(breeds);
             //set mode to "cat"
+            mode = "cat";
             return true;
         }
     }

@@ -33,13 +33,12 @@ public class SellPetDialog extends JDialog {
 
         //load pet
         Pets pet = new Pets(id);
-        //Store customer's id
+
         //combo box
         customerComboBoxModel = new DefaultComboBoxModel();
         customerComboBox.setModel(customerComboBoxModel);
 
         //load initial data
-        //refreshCustomerComboBox(new String[]{"091738174", "09213810"});
         refreshCustomerComboBox(loadCustomerPhone());
         customerComboBox.setSelectedIndex(-1);
 

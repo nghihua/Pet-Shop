@@ -80,10 +80,16 @@ public class CheckCustomerDialog extends JDialog {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                refreshCustomerList(loadAllCustomer());
+                resetDisplay();
             }
         });
         this.setVisible(true);
+    }
+
+    public void resetDisplay() {
+        refreshCustomerList(loadAllCustomer());
+        nameTextField.setText("");
+        phoneTextField.setText("");
     }
 
     String[] loadAllCustomer()

@@ -21,10 +21,7 @@ public class ViewCustomerDialog extends JDialog {
     private JButton submitButton;
     private JButton deleteButton;
 
-    private void disposeDialog() {
-        this.dispose();
-    }
-    ViewCustomerDialog(JDialog parent, String phone) {
+    ViewCustomerDialog(CheckCustomerDialog parent, String phone) {
         super(parent, "View Customer Information", true);
         this.setSize((int) (0.4 * parent.getWidth()), (int) (0.8 * parent.getHeight()));
         this.setContentPane(mainPanel);
@@ -77,13 +74,13 @@ public class ViewCustomerDialog extends JDialog {
                         new String[]{"Cancel", "OK"}, //Object[] options,
                         "Cancel");//Object initialValue
                 if (choice == 0 ){
-                    disposeDialog();
+                    ViewCustomerDialog.this.dispose();
                     //do nothing
                 } else {
                     //delete it
                     c.deleteInfo();
-                    disposeDialog();
-                    System.out.println("Delete!");
+                    ViewCustomerDialog.this.dispose();
+                    parent.resetDisplay();
                 }
             }
         });
