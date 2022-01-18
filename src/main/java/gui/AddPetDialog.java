@@ -38,7 +38,11 @@ public class AddPetDialog extends JDialog {
         breedComboBoxModel = new DefaultComboBoxModel();
         breedComboBox.setModel(breedComboBoxModel);
 
-        selectPetSpecies();
+        //select pet species, if no species is collected then return
+        if (!selectPetSpecies()) {
+            this.dispose();
+            return;
+        }
 
         //handle submit
         submitButton.addActionListener(new ActionListener() {
@@ -109,7 +113,7 @@ public class AddPetDialog extends JDialog {
         }
         return breed;
     }
-    public void selectPetSpecies() {
+    public boolean selectPetSpecies() {
         int choice = JOptionPane.showOptionDialog(null,
                 "Which type of pet do you want to add?", //Object message,
                 "Select Species", //String title
@@ -120,7 +124,7 @@ public class AddPetDialog extends JDialog {
                 "Dog");//Object initialValue
         if (choice == -1) {
             //if user clicked "x", then dispose the frame entirely
-            this.dispose();
+            return false;
         }
         else if (choice == 0 ) {
             //load Dog's breeds into combo box
@@ -129,13 +133,14 @@ public class AddPetDialog extends JDialog {
             refreshBreedComboBox(breeds);
             //set mode to "dog"
             mode = "dog";
+            return true;
         }
         else{
             //load Cat's breeds into combo box
             String[] breeds = getBreed("Cat");
             refreshBreedComboBox(breeds);
             //set mode to "cat"
-            mode = "cat";
+            return true;
         }
     }
 
