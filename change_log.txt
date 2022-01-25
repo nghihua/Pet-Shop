@@ -1,2 +1,0 @@
-- Add class PostgreSQLJDBC
-- Modify MainFrame class to connect to database when it is created (line 39) and add WindowAdapter to disconnect database when the main frame is closed (line 42)
